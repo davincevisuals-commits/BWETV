@@ -80,14 +80,119 @@
         </div>
       </div>
 
-      <!-- Live Chat -->
-      <aside class="bg-white text-black rounded-lg shadow-lg border-t-4 border-blue-600 p-4">
-        <h2 class="text-xl font-bold mb-3">💬 Live Chat</h2>
-        <div id="chatContainer" class="border p-3 h-72 overflow-y-auto bg-gray-50 mb-3 rounded"></div>
-        <input id="chatInput" type="text" placeholder="Type a message..." class="border p-2 w-full mb-2 rounded">
-        <button id="chatBtn" class="w-full bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">Send</button>
-        <p class="text-xs text-gray-600 mt-2">Chat as your account email, or as guest if unavailable.</p>
-      </aside>
+ 
+  // Live Chat (Improved)
+  const chatContainer = document.getElementById("chatContainer");
+  const chatInput = document.getElementById("chatInput");
+  const chatBtn = document.getElementById("chatBtn");
+  const newMsgBtn = document.getElementById("newMsgBtn");
+  const charCount = document.getElementById("charCount");
+  const chatStatus = document.getElementById("chatStatus");
+
+  const MAX_LENGTH = 300;
+  const NEAR_BOTTOM_THRESHOLD = 80;
+
+  function isNearBottom(el) {
+    return el.scrollHeight - el.scrollTop - el.clientHeight < NEAR_BOTTOM_THRESHOLD;
+  }
+
+  function scrollToBottom() {
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+    newMsgBtn.classList.add("hidden");
+  }
+
+  function formatTime(ts) {
+    const d = new Date(ts || Date.now());
+    return d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+  }
+
+  function validateChatInput() {
+    const msg = chatInput.value.trim();
+    charCount.textContent = `${chatInput.value.length}/${MAX_LENGTH}`;
+    chatBtn.disabled = !msg || msg.length > MAX_LENGTH;
+  }
+
+  chatInput.addEventListener("input", validateChatInput);
+
+  chatInput.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      if (!chatBtn.disabled) sendMessage();
+    }
+  });
+
+  newMsgBtn.addEventListener("click", scrollToBottom);
+
+  function sendMessage() {
+    const msg = chatInput.value.trim();
+    if (!msg || msg.length > MAX_LENGTH) return;
+
+    const payload = {
+      text: msg,
+      user: auth.currentUser ? (auth.currentUser.email || "guest") : "guest",
+      timestamp: Date.now()
+    };
+
+    chatBtn.disabled = true;
+    chatStatus.textContent = "Sending...";
+
+    rtdb.ref("chat").push(payload)
+      .then(() => {
+        chatInput.value = "";
+        validateChatInput();
+        chatStatus.textContent = "Connected";
+      })
+      .catch(() => {
+        chatStatus.textContent = "Send failed";
+        alert("Message failed to send. Please try again.");
+      })
+      .finally(() => {
+        validateChatInput();
+      });
+  }
+
+  chatBtn.addEventListener("click", sendMessage);
+
+  rtdb.ref(".info/connected").on("value", (snap) => {
+    chatStatus.textContent = snap.val() ? "Connected" : "Reconnecting...";
+  });
+
+  rtdb.ref("chat").limitToLast(100).on("child_added", (snapshot) => {
+    const msg = snapshot.val() || {};
+    const nearBottom = isNearBottom(chatContainer);
+
+    const isMe = (auth.currentUser && msg.user === auth.currentUser.email);
+    const row = document.createElement("div");
+    row.className = `mb-2 flex ${isMe ? "justify-end" : "justify-start"}`;
+
+    const bubble = document.createElement("div");
+    bubble.className = `max-w-[85%] p-2 rounded shadow-sm border ${
+      isMe ? "bg-blue-600 text-white border-blue-700" : "bg-white text-black border-gray-200"
+    }`;
+
+    const meta = document.createElement("div");
+    meta.className = `text-[11px] mb-1 ${isMe ? "text-blue-100" : "text-gray-500"}`;
+    meta.textContent = `${msg.user || "guest"} • ${formatTime(msg.timestamp)}`;
+
+    const body = document.createElement("div");
+    body.className = "text-sm whitespace-pre-wrap break-words";
+    body.textContent = msg.text || "";
+
+    bubble.appendChild(meta);
+    bubble.appendChild(body);
+    row.appendChild(bubble);
+    chatContainer.appendChild(row);
+
+    if (nearBottom) {
+      scrollToBottom();
+    } else {
+      newMsgBtn.classList.remove("hidden");
+    }
+  });
+
+  // initial state
+  validateChatInput();
+</script>
 
     </div>
   </section>

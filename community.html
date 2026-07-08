@@ -228,18 +228,20 @@
 <script>
   // Firebase config (same as index.html)
   const firebaseConfig = {
-    apiKey: "AIzaSyCg9fxgrXlEuKW_m5MvDnG26Uf6lLdiYik",
-    authDomain: "bwetv-ug.firebaseapp.com",
-    projectId: "bwetv-ug",
-    storageBucket: "bwetv-ug.firebasestorage.app",
-    messagingSenderId: "481870926362",
-    appId: "1:481870926362:web:f406a0f135449ccfaa77a3",
-    measurementId: "G-SJ5YJH2G7C"
-  };
+  apiKey: "AIzaSyCg9fxgrXlEuKW_m5MvDnG26Uf6lLdiYik",
+  authDomain: "bwetv-ug.firebaseapp.com",
+  databaseURL: "https://bwetv-ug-default-rtdb.firebaseio.com",
+  projectId: "bwetv-ug",
+  storageBucket: "bwetv-ug.firebasestorage.app",
+  messagingSenderId: "481870926362",
+  appId: "1:481870926362:web:f406a0f135449ccfaa77a3",
+  measurementId: "G-SJ5YJH2G7C"
+};
 
-  // Initialize Firebase
-  const app = firebase.initializeApp(firebaseConfig);
-  const auth = firebase.auth();
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+const db = getDatabase(app);
+const auth = getAuth(app);
 
   // Protect this page: redirect if not logged in
   auth.onAuthStateChanged(user => {

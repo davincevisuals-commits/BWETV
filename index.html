@@ -1,0 +1,349 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BWE TV Live</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link href="https://vjs.zencdn.net/7.20.3/video-js.css" rel="stylesheet" />
+  <style>
+    .mobile-menu {
+      transition: all 0.3s ease;
+    }
+    .mobile-menu.hidden {
+      max-height: 0;
+      overflow: hidden;
+    }
+    .mobile-menu.visible {
+      max-height: 300px;
+    }
+    .program-card {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .program-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+  </style>
+</head>
+<body class="bg-white text-black">
+
+  <!-- Header -->
+  <header class="bg-yellow-900 text-white sticky top-0 z-50 shadow-lg">
+    <div class="flex justify-between items-center p-4">
+      <div class="text-2xl font-bold">BWE <span class="bg-red-600 px-2">TV</span></div>
+      
+      <!-- Desktop Navigation -->
+      <nav class="hidden md:flex space-x-6">
+        <a href="index.html" class="hover:text-yellow-200 transition">Home</a>
+        <a href="schedule.html" class="hover:text-yellow-200 transition">Programs</a>
+        <a href="shows.html" class="hover:text-yellow-200 transition">Shows</a>
+        <a href="community.html" class="hover:text-yellow-200 transition">Community</a>
+      </nav>
+      
+      <!-- Mobile Menu Toggle Button -->
+      <button id="mobileMenuBtn" class="md:hidden text-2xl hover:bg-yellow-800 p-2 rounded transition">☰</button>
+    </div>
+
+    <!-- Mobile Navigation Menu -->
+    <nav id="mobileMenu" class="mobile-menu hidden bg-yellow-800 md:hidden">
+      <div class="flex flex-col p-4 space-y-3">
+        <a href="index.html" class="hover:text-yellow-200 transition">Home</a>
+        <a href="schedule.html" class="hover:text-yellow-200 transition">Programs</a>
+        <a href="shows.html" class="hover:text-yellow-200 transition">Shows</a>
+        <a href="community.html" class="hover:text-yellow-200 transition">Community</a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="text-center bg-black text-white p-6">
+    <h1 class="text-3xl md:text-4xl font-bold mb-4">WATCH BWE TV LIVE NOW</h1>
+    
+    <!-- Enhanced Video Player -->
+    <div class="mb-4">
+      <video id="livePlayer" class="video-js vjs-default-skin w-full h-auto" controls autoplay preload="auto" data-setup='{"fluid": true, "aspectRatio": "16:9"}'>
+        <source src="http://yourserverip:8080/live/streamkey.m3u8" type="application/x-mpegURL">
+        <source src="video.mp4" type="video/mp4">
+      </video>
+    </div>
+
+    <!-- Player Info & Buttons -->
+    <div class="flex flex-wrap gap-2 justify-center mb-4">
+      <button class="bg-red-600 text-white px-4 py-2 rounded font-bold hover:bg-red-700 transition flex items-center">
+        <span class="inline-block w-3 h-3 bg-red-300 rounded-full mr-2 animate-pulse"></span> LIVE
+      </button>
+      <button onclick="window.location.href='community.html'" class="bg-white text-black px-4 py-2 rounded font-bold hover:bg-gray-200 transition">Join the Community</button>
+      <button onclick="shareVideo()" class="bg-blue-600 text-white px-4 py-2 rounded font-bold hover:bg-blue-700 transition">Share</button>
+    </div>
+  </section>
+
+  <!-- Today's Programs Section -->
+  <section class="p-6 bg-gray-50">
+    <div class="max-w-6xl mx-auto">
+      <h2 class="text-3xl text-red-600 mb-6 font-bold">Today's Programs</h2>
+      <div id="programsContainer" class="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <!-- Programs will be loaded dynamically -->
+        <div class="bg-white rounded shadow p-4 program-card">
+          <div class="h-20 bg-gray-300 rounded mb-3"></div>
+          <div class="h-4 bg-gray-300 rounded mb-2"></div>
+          <div class="h-4 bg-gray-300 rounded"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+    <!-- Partner Radio Stations Section -->
+  <section class="p-6 bg-white">
+    <div class="max-w-6xl mx-auto text-center">
+      <h2 class="text-3xl text-yellow-900 mb-6 font-bold">🎙️ Partner Radio Stations</h2>
+      
+      <!-- BBC Radio 1 -->
+      <div class="mb-6">
+        <h3 class="text-xl font-semibold mb-2">BBC Radio 1</h3>
+        <audio controls class="w-full max-w-md mx-auto">
+          <source src="http://as-hls-ww-live.akamaized.net/pool_01505109/live/ww/bbc_radio_one/bbc_radio_one.isml/bbc_radio_one-audio=96000.norewind.m3u8" type="audio/mpeg">
+          Your browser does not support the audio element.
+        </audio>
+      </div>
+
+      <!-- BBC Radio 2 -->
+      <div class="mb-6">
+        <h3 class="text-xl font-semibold mb-2">BBC Radio 2</h3>
+        <audio controls class="w-full max-w-md mx-auto">
+          <source src="http://as-hls-ww-live.akamaized.net/pool_74208725/live/ww/bbc_radio_two/bbc_radio_two.isml/bbc_radio_two-audio=96000.norewind.m3u8" type="audio/mpeg">
+          Your browser does not support the audio element.
+        </audio>
+      </div>
+
+      <!-- BBC World Service -->
+      <div class="mb-6">
+        <h3 class="text-xl font-semibold mb-2">BBC World Service</h3>
+        <audio controls class="w-full max-w-md mx-auto">
+          <source src="http://as-hls-ww-live.akamaized.net/pool_87948813/live/ww/bbc_world_service/bbc_world_service.isml/bbc_world_service-audio=96000.norewind.m3u8" type="audio/mpeg">
+          Your browser does not support the audio element.
+        </audio>
+      </div>
+    </div>
+
+<!-- Prime Radio Kampala -->
+<div class="mb-6">
+  <h3 class="text-xl font-semibold mb-2">Prime Radio Kampala 91.9 FM</h3>
+  <iframe src="https://onlineradiobox.com/ug/prime/?cs=ug.prime" 
+          width="300" height="150" frameborder="0" allow="autoplay">
+  </iframe>
+</div>
+
+  </section>
+
+   <!-- Footer -->
+  <footer class="bg-yellow-900 text-white text-center p-4 mt-8">
+    <p>© 2026 BWE TV | <a href="#" class="hover:underline">About</a> | <a href="#" class="hover:underline">Privacy</a> | <a href="#" class="hover:underline">Contact</a></p>
+    <div class="flex justify-center space-x-4 mt-2">
+      <a href="#" class="hover:text-yellow-200 transition">Facebook</a>
+      <a href="#" class="hover:text-yellow-200 transition">Twitter</a>
+      <a href="#" class="hover:text-yellow-200 transition">YouTube</a>
+      <a href="#" class="hover:text-yellow-200 transition">Instagram</a>
+    </div>
+  </footer>
+
+  <script src="https://vjs.zencdn.net/7.20.3/video.min.js"></script>
+  <script src="content.js"></script>
+
+  <!-- Firebase Auth Section -->
+<section class="p-6 bg-gray-100">
+  <div class="max-w-md mx-auto text-center">
+    <h2 class="text-2xl font-bold mb-4">🔐 Member Access</h2>
+
+    <!-- Sign Up Form -->
+    <form id="signupForm" class="mb-6">
+      <input id="signupEmail" type="email" placeholder="Email" class="border p-2 w-full mb-2" required>
+      <input id="signupPassword" type="password" placeholder="Password" class="border p-2 w-full mb-2" required>
+      <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded">Sign Up</button>
+    </form>
+
+    <!-- Login Form -->
+    <form id="loginForm" class="mb-6">
+      <input id="loginEmail" type="email" placeholder="Email" class="border p-2 w-full mb-2" required>
+      <input id="loginPassword" type="password" placeholder="Password" class="border p-2 w-full mb-2" required>
+      <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Login</button>
+    </form>
+
+    <!-- Logout Button -->
+    <button id="logoutBtn" class="bg-red-600 text-white px-4 py-2 rounded mb-4">Logout</button>
+
+    <!-- Auth Status -->
+    <p id="authStatus" class="text-sm text-gray-700">Not logged in</p>
+  </div>
+</section>
+ <!-- Firebase SDKs (Compat versions) -->
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-analytics-compat.js"></script>
+
+<script>
+  // Firebase config
+  const firebaseConfig = {
+    apiKey: "AIzaSyCg9fxgrXlEuKW_m5MvDnG26Uf6lLdiYik",
+    authDomain: "bwetv-ug.firebaseapp.com",
+    projectId: "bwetv-ug",
+    storageBucket: "bwetv-ug.firebasestorage.app",
+    messagingSenderId: "481870926362",
+    appId: "1:481870926362:web:f406a0f135449ccfaa77a3",
+    measurementId: "G-SJ5YJH2G7C"
+  };
+
+  // Initialize Firebase
+  const app = firebase.initializeApp(firebaseConfig);
+  const analytics = firebase.analytics();
+  const auth = firebase.auth();
+
+  // Sign Up
+  document.getElementById("signupForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+    const email = document.getElementById("signupEmail").value;
+    const password = document.getElementById("signupPassword").value;
+    auth.createUserWithEmailAndPassword(email, password)
+      .then(userCredential => {
+        alert("Sign up successful: " + userCredential.user.email);
+        window.location.href = "community.html"; // redirect after sign-up
+      })
+      .catch(error => alert(error.message));
+  });
+
+  // Login
+  document.getElementById("loginForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+    const email = document.getElementById("loginEmail").value;
+    const password = document.getElementById("loginPassword").value;
+    auth.signInWithEmailAndPassword(email, password)
+      .then(userCredential => {
+        alert("Login successful: " + userCredential.user.email);
+        window.location.href = "community.html"; // redirect after login
+      })
+      .catch(error => alert(error.message));
+  });
+
+  // Logout
+  document.getElementById("logoutBtn").addEventListener("click", function() {
+    auth.signOut().then(() => {
+      alert("Logged out successfully");
+      window.location.href = "index.html"; // redirect back to home
+    });
+  });
+
+  // Check login state
+  auth.onAuthStateChanged(user => {
+    if (user) {
+      document.getElementById("authStatus").innerText = "Logged in as " + user.email;
+    } else {
+      document.getElementById("authStatus").innerText = "Not logged in";
+    }
+  });
+</script>
+
+  <script>
+    // Mobile Menu Toggle
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    mobileMenuBtn.addEventListener('click', function() {
+      mobileMenu.classList.toggle('hidden');
+      mobileMenu.classList.toggle('visible');
+    });
+    document.querySelectorAll('#mobileMenu a').forEach(link => {
+      link.addEventListener('click', function() {
+        mobileMenu.classList.add('hidden');
+        mobileMenu.classList.remove('visible');
+      });
+    });
+    function shareVideo() {
+      if (navigator.share) {
+        navigator.share({
+          title: 'Watch BWE TV Live',
+          text: 'Join me watching BWE TV Live Now!',
+          url: window.location.href
+        });
+      } else {
+        alert('Share this link: ' + window.location.href);
+      }
+    }
+    document.addEventListener('DOMContentLoaded', loadPrograms);
+    function loadPrograms() {
+      const container = document.getElementById('programsContainer');
+      container.innerHTML = '';
+      PROGRAMS.forEach(program => {
+        const card = document.createElement('div');
+        card.className = 'bg-white rounded shadow overflow-hidden program-card cursor-pointer hover:shadow-lg';
+        card.innerHTML = `
+          <div class="bg-gradient-to-br from-red-600 to-red-800 h-24 flex items-center justify-center">
+            <span class="text-white text-3xl">📺</span>
+          </div>
+          <div class="p-4">
+            <h3 class="font-bold text-lg mb-1">${program.name}</h3>
+            <p class="text-sm text-gray-600 mb-2">${program.time}</p>
+            <p class="text-xs text-gray-500">Host: ${program.host}</p>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+  </script>
+</body>
+</html>
+  
+  <script>
+    // Mobile Menu Toggle
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+
+    mobileMenuBtn.addEventListener('click', function() {
+      mobileMenu.classList.toggle('hidden');
+      mobileMenu.classList.toggle('visible');
+    });
+
+    // Close menu when link is clicked
+    document.querySelectorAll('#mobileMenu a').forEach(link => {
+      link.addEventListener('click', function() {
+        mobileMenu.classList.add('hidden');
+        mobileMenu.classList.remove('visible');
+      });
+    });
+
+    // Share Function
+    function shareVideo() {
+      if (navigator.share) {
+        navigator.share({
+          title: 'Watch BWE TV Live',
+          text: 'Join me watching BWE TV Live Now!',
+          url: window.location.href
+        });
+      } else {
+        alert('Share this link: ' + window.location.href);
+      }
+    }
+
+    // Load programs on page load
+    document.addEventListener('DOMContentLoaded', loadPrograms);
+
+    function loadPrograms() {
+      const container = document.getElementById('programsContainer');
+      container.innerHTML = '';
+      
+      PROGRAMS.forEach(program => {
+        const card = document.createElement('div');
+        card.className = 'bg-white rounded shadow overflow-hidden program-card cursor-pointer hover:shadow-lg';
+        card.innerHTML = `
+          <div class="bg-gradient-to-br from-red-600 to-red-800 h-24 flex items-center justify-center">
+            <span class="text-white text-3xl">📺</span>
+          </div>
+          <div class="p-4">
+            <h3 class="font-bold text-lg mb-1">${program.name}</h3>
+            <p class="text-sm text-gray-600 mb-2">${program.time}</p>
+            <p class="text-xs text-gray-500">Host: ${program.host}</p>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BWE TV Schedule</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link href="https://vjs.zencdn.net/7.20.3/video-js.css" rel="stylesheet" />
+  <style>
+    .mobile-menu {
+      transition: all 0.3s ease;
+    }
+    .mobile-menu.hidden {
+      max-height: 0;
+      overflow: hidden;
+    }
+    .mobile-menu.visible {
+      max-height: 300px;
+    }
+    .schedule-item {
+      transition: all 0.3s ease;
+      border-left: 4px solid #f87171;
+    }
+    .schedule-item:hover {
+      background-color: #fef3c7;
+      transform: translateX(4px);
+    }
+    .live-indicator {
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+  </style>
+</head>
+<body class="bg-white text-black">
+
+  <!-- Header -->
+  <header class="bg-yellow-900 text-white sticky top-0 z-50 shadow-lg">
+    <div class="flex justify-between items-center p-4">
+      <div class="text-2xl font-bold">BWE <span class="bg-red-600 px-2">TV</span></div>
+      
+      <!-- Desktop Navigation -->
+      <nav class="hidden md:flex space-x-6">
+        <a href="index.html" class="hover:text-yellow-200 transition">Home</a>
+        <a href="schedule.html" class="hover:text-yellow-200 transition">Programs</a>
+        <a href="shows.html" class="hover:text-yellow-200 transition">Shows</a>
+        <a href="community.html" class="hover:text-yellow-200 transition">Community</a>
+      </nav>
+      
+      <!-- Mobile Menu Toggle Button -->
+      <button id="mobileMenuBtn" class="md:hidden text-2xl hover:bg-yellow-800 p-2 rounded transition">☰</button>
+    </div>
+
+    <!-- Mobile Navigation Menu -->
+    <nav id="mobileMenu" class="mobile-menu hidden bg-yellow-800 md:hidden">
+      <div class="flex flex-col p-4 space-y-3">
+        <a href="index.html" class="hover:text-yellow-200 transition">Home</a>
+        <a href="schedule.html" class="hover:text-yellow-200 transition">Programs</a>
+        <a href="shows.html" class="hover:text-yellow-200 transition">Shows</a>
+        <a href="community.html" class="hover:text-yellow-200 transition">Community</a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- On Air Now Section -->
+  <section class="p-6 bg-gradient-to-r from-red-600 to-red-800 text-white text-center">
+    <h2 class="text-2xl font-bold mb-4">On Air Now</h2>
+    <div id="currentShowInfo" class="mb-6">
+      <p class="text-lg font-semibold">Loading...</p>
+    </div>
+    
+    <!-- Video Player -->
+    <div class="mb-4 max-w-4xl mx-auto">
+      <video id="livePlayer" class="video-js vjs-default-skin w-full h-auto" controls autoplay preload="auto" data-setup='{"fluid": true, "aspectRatio": "16:9"}'>
+        <source src="http://yourserverip:8080/live/streamkey.m3u8" type="application/x-mpegURL">
+        <source src="video.mp4" type="video/mp4">
+      </video>
+    </div>
+    
+    <button onclick="window.location.href='index.html'" class="bg-white text-red-600 px-6 py-2 rounded font-bold hover:bg-gray-200 transition">← Back to Home</button>
+  </section>
+
+  <!-- Day/Time Filter -->
+  <section class="p-6 bg-gray-100 border-b">
+    <div class="max-w-6xl mx-auto">
+      <h3 class="text-lg font-bold mb-4 text-gray-700">Select Day</h3>
+      <div class="flex flex-wrap gap-2">
+        <button onclick="selectDay(event, 'Today')" class="day-btn bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition font-semibold" data-day="today">Today</button>
+        <button onclick="selectDay(event, 'Monday')" class="day-btn bg-white text-black px-4 py-2 rounded border hover:bg-gray-100 transition" data-day="monday">Monday</button>
+        <button onclick="selectDay(event, 'Tuesday')" class="day-btn bg-white text-black px-4 py-2 rounded border hover:bg-gray-100 transition" data-day="tuesday">Tuesday</button>
+        <button onclick="selectDay(event, 'Wednesday')" class="day-btn bg-white text-black px-4 py-2 rounded border hover:bg-gray-100 transition" data-day="wednesday">Wednesday</button>
+        <button onclick="selectDay(event, 'Thursday')" class="day-btn bg-white text-black px-4 py-2 rounded border hover:bg-gray-100 transition" data-day="thursday">Thursday</button>
+        <button onclick="selectDay(event, 'Friday')" class="day-btn bg-white text-black px-4 py-2 rounded border hover:bg-gray-100 transition" data-day="friday">Friday</button>
+        <button onclick="selectDay(event, 'Saturday')" class="day-btn bg-white text-black px-4 py-2 rounded border hover:bg-gray-100 transition" data-day="saturday">Saturday</button>
+        <button onclick="selectDay(event, 'Sunday')" class="day-btn bg-white text-black px-4 py-2 rounded border hover:bg-gray-100 transition" data-day="sunday">Sunday</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Daily Schedule -->
+  <section class="p-6 bg-white">
+    <div class="max-w-6xl mx-auto">
+      <h2 id="scheduleTitle" class="text-2xl text-red-600 mb-6 font-bold">Today's Schedule</h2>
+      
+      <div id="scheduleContainer" class="space-y-3">
+        <!-- Schedule items will be loaded dynamically -->
+        <div class="bg-gray-100 rounded p-4 h-20"></div>
+      </div>
+
+      <!-- Schedule Actions -->
+      <div class="mt-8 flex flex-wrap gap-3 justify-center md:justify-start">
+        <button onclick="setReminder()" class="bg-white text-black border-2 border-black px-6 py-2 rounded font-bold hover:bg-black hover:text-white transition">🔔 Set Reminder</button>
+        <button onclick="shareSchedule()" class="bg-blue-600 text-white px-6 py-2 rounded font-bold hover:bg-blue-700 transition">Share Schedule</button>
+        <button onclick="downloadSchedule()" class="bg-green-600 text-white px-6 py-2 rounded font-bold hover:bg-green-700 transition">📥 Download</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-yellow-900 text-white text-center p-4 mt-8">
+    <p>© 2026 BWE TV | <a href="#" class="hover:underline">About</a> | <a href="#" class="hover:underline">Privacy</a> | <a href="#" class="hover:underline">Contact</a></p>
+    <div class="flex justify-center space-x-4 mt-2">
+      <a href="#" class="hover:text-yellow-200 transition">Facebook</a>
+      <a href="#" class="hover:text-yellow-200 transition">Twitter</a>
+      <a href="#" class="hover:text-yellow-200 transition">YouTube</a>
+      <a href="#" class="hover:text-yellow-200 transition">Instagram</a>
+    </div>
+  </footer>
+
+  <script src="https://vjs.zencdn.net/7.20.3/video.min.js"></script>
+  <script src="content.js"></script>
+
+  <script>
+    // Mobile Menu Toggle
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+
+    mobileMenuBtn.addEventListener('click', function() {
+      mobileMenu.classList.toggle('hidden');
+      mobileMenu.classList.toggle('visible');
+    });
+
+    document.querySelectorAll('#mobileMenu a').forEach(link => {
+      link.addEventListener('click', function() {
+        mobileMenu.classList.add('hidden');
+        mobileMenu.classList.remove('visible');
+      });
+    });
+
+    // Schedule Management
+    let currentDay = 'today';
+    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const today = new Date().getDay();
+
+    function selectDay(event, day) {
+      currentDay = day.toLowerCase();
+      
+      // Update button styles
+      document.querySelectorAll('.day-btn').forEach(btn => {
+        btn.classList.remove('bg-red-600', 'text-white');
+        btn.classList.add('bg-white', 'text-black', 'border');
+      });
+      event.target.classList.add('bg-red-600', 'text-white');
+      event.target.classList.remove('bg-white', 'text-black', 'border');
+
+      loadSchedule();
+    }
+
+    function loadSchedule() {
+      const container = document.getElementById('scheduleContainer');
+      const title = document.getElementById('scheduleTitle');
+      
+      let dayName = currentDay;
+      if (currentDay === 'today') {
+        dayName = days[today];
+        title.textContent = "Today's Schedule";
+      } else {
+        title.textContent = dayName + "'s Schedule";
+      }
+
+      const schedule = currentDay === 'today' ? getTodaySchedule() : WEEKLY_SCHEDULE[dayName] || [];
+      
+      container.innerHTML = '';
+
+      if (schedule.length === 0) {
+        container.innerHTML = '<div class="text-center text-gray-500 py-8">No programs scheduled</div>';
+        return;
+      }
+
+      schedule.forEach((program, index) => {
+        const item = document.createElement('div');
+        item.className = 'schedule-item bg-yellow-50 rounded p-4 md:p-6 border border-red-200';
+        item.innerHTML = `
+          <div class="grid md:grid-cols-4 gap-4 items-center">
+            <div>
+              <p class="text-sm text-gray-600">Time</p>
+              <p class="text-xl font-bold text-red-600">${program.time}</p>
+            </div>
+            <div>
+              <p class="text-sm text-gray-600">Program</p>
+              <p class="font-bold text-lg">${program.show}</p>
+            </div>
+            <div>
+              <p class="text-sm text-gray-600">Host</p>
+              <p class="font-semibold">${program.host}</p>
+            </div>
+            <div class="flex gap-2 justify-end">
+              <span class="bg-gray-200 text-gray-800 text-xs px-3 py-1 rounded-full">${program.duration}</span>
+              <button onclick="setShowReminder('${program.show}')" class="bg-red-600 text-white px-4 py-2 rounded text-sm hover:bg-red-700 transition">Remind</button>
+            </div>
+          </div>
+        `;
+        container.appendChild(item);
+      });
+    }
+
+    function updateCurrentShow() {
+      const currentShow = getCurrentShow();
+      const container = document.getElementById('currentShowInfo');
+
+      if (currentShow) {
+        container.innerHTML = `
+          <div class="flex items-center justify-center gap-3 mb-2">
+            <span class="inline-block w-4 h-4 bg-red-300 rounded-full live-indicator"></span>
+            <p class="text-lg font-semibold">${currentShow.show}</p>
+            <span class="inline-block w-4 h-4 bg-red-300 rounded-full live-indicator"></span>
+          </div>
+          <p class="text-sm opacity-90">Hosted by ${currentShow.host}</p>
+        `;
+      } else {
+        container.innerHTML = '<p class="text-lg">No program currently airing</p>';
+      }
+    }
+
+    function setShowReminder(showName) {
+      alert(`✅ Reminder set for "${showName}"`);
+    }
+
+    function setReminder() {
+      alert('✅ Reminders set for all programs today!');
+    }
+
+    function shareSchedule() {
+      const scheduleText = `Check out today's schedule on BWE TV! ${window.location.href}`;
+      if (navigator.share) {
+        navigator.share({
+          title: 'BWE TV Schedule',
+          text: scheduleText,
+          url: window.location.href
+        });
+      } else {
+        alert('Share this: ' + window.location.href);
+      }
+    }
+
+    function downloadSchedule() {
+      const day = currentDay === 'today' ? days[today] : currentDay;
+      const schedule = currentDay === 'today' ? getTodaySchedule() : WEEKLY_SCHEDULE[day];
+      
+      let csv = 'Time,Program,Host,Duration\n';
+      schedule.forEach(program => {
+        csv += `"${program.time}","${program.show}","${program.host}","${program.duration}"\n`;
+      });
+
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `BWE-TV-Schedule-${day}.csv`;
+      a.click();
+    }
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', function() {
+      loadSchedule();
+      updateCurrentShow();
+      setInterval(updateCurrentShow, 60000); // Update every minute
+    });
+  </script>
+</body>
+</html>

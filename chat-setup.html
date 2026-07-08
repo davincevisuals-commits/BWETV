@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chat Integration Setup - BWE TV</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    .code-block {
+      background-color: #1f2937;
+      color: #10b981;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      overflow-x: auto;
+      font-family: 'Courier New', monospace;
+      font-size: 0.875rem;
+      line-height: 1.5;
+    }
+    .step-number {
+      display: inline-block;
+      width: 2.5rem;
+      height: 2.5rem;
+      background-color: #dc2626;
+      color: white;
+      border-radius: 50%;
+      text-align: center;
+      line-height: 2.5rem;
+      font-weight: bold;
+      margin-right: 1rem;
+    }
+    .feature-card {
+      transition: all 0.3s ease;
+    }
+    .feature-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-900">
+
+  <!-- Header -->
+  <header class="bg-yellow-900 text-white sticky top-0 z-50 shadow-lg">
+    <div class="max-w-6xl mx-auto flex justify-between items-center p-4">
+      <div class="text-2xl font-bold">BWE <span class="bg-red-600 px-2">TV</span></div>
+      <nav class="hidden md:flex space-x-6">
+        <a href="index.html" class="hover:text-yellow-200 transition">Home</a>
+        <a href="live-chat.html" class="hover:text-yellow-200 transition">Live Chat</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="max-w-6xl mx-auto py-12 px-4">
+
+    <!-- Page Title -->
+    <div class="text-center mb-12">
+      <h1 class="text-4xl font-bold mb-4">Live Chat Setup Guide</h1>
+      <p class="text-xl text-gray-600">Choose your implementation and get started with real-time messaging</p>
+    </div>
+
+    <!-- Quick Comparison -->
+    <section class="mb-12">
+      <h2 class="text-3xl font-bold mb-8 text-center">Choose Your Path</h2>
+      
+      <div class="grid md:grid-cols-2 gap-6 mb-8">
+        <!-- Firebase Option -->
+        <div class="feature-card bg-white rounded-lg shadow-lg p-8 border-t-4 border-blue-600">
+          <div class="text-4xl mb-4">🔥</div>
+          <h3 class="text-2xl font-bold mb-4 text-blue-600">Firebase</h3>
+          <p class="text-gray-600 mb-6">Cloud-based, no server management required</p>
+          
+          <div class="mb-6">
+            <h4 class="font-bold mb-3 text-green-600">✅ Pros</h4>
+            <ul class="text-sm text-gray-700 space-y-2">
+              <li>✓ No server setup needed</li>
+              <li>✓ Scales automatically</li>
+              <li>✓ Free tier available</li>
+              <li>✓ Real-time sync</li>
+              <li>✓ Built-in auth</li>
+            </ul>
+          </div>
+
+          <div class="mb-6">
+            <h4 class="font-bold mb-3 text-red-600">❌ Cons</h4>
+            <ul class="text-sm text-gray-700 space-y-2">
+              <li>• Limited customization</li>
+              <li>• Third-party dependency</li>
+              <li>• Rate limits on free tier</li>
+            </ul>
+          </div>
+
+          <a href="#firebase-setup" class="block w-full bg-blue-600 text-white py-3 rounded font-bold text-center hover:bg-blue-700 transition">
+            Setup Firebase →
+          </a>
+        </div>
+
+        <!-- Socket.io Option -->
+        <div class="feature-card bg-white rounded-lg shadow-lg p-8 border-t-4 border-purple-600">
+          <div class="text-4xl mb-4">🔌</div>
+          <h3 class="text-2xl font-bold mb-4 text-purple-600">Socket.io</h3>
+          <p class="text-gray-600 mb-6">Self-hosted server with full control</p>
+          
+          <div class="mb-6">
+            <h4 class="font-bold mb-3 text-green-600">✅ Pros</h4>
+            <ul class="text-sm text-gray-700 space-y-2">
+              <li>✓ Full control</li>
+              <li>✓ No limits</li>
+              <li>✓ Enterprise-ready</li>
+              <li>✓ Customizable</li>
+              <li>✓ Open source</li>
+            </ul>
+          </div>
+
+          <div class="mb-6">
+            <h4 class="font-bold mb-3 text-red-600">❌ Cons</h4>
+            <ul class="text-sm text-gray-700 space-y-2">
+              <li>• Requires server</li>
+              <li>• More complex setup</li>
+              <li>• Hosting costs ($5+/mo)</li>
+            </ul>
+          </div>
+
+          <a href="#socketio-setup" class="block w-full bg-purple-600 text-white py-3 rounded font-bold text-center hover:bg-purple-700 transition">
+            Setup Socket.io →
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Firebase Setup -->
+    <section id="firebase-setup" class="mb-16 bg-white rounded-lg shadow-lg p-8">
+      <h2 class="text-3xl font-bold mb-8 text-blue-600">🔥 Firebase Setup</h2>
+
+      <div class="space-y-8">
+        <!-- Step 1 -->
+        <div>
+          <div class="flex items-start mb-4">
+            <span class="step-number">1</span>
+            <div>
+              <h3 class="text-xl font-bold">Create Firebase Project</h3>
+              <p class="text-gray-600">Visit Firebase Console and create a new project</p>
+            </div>
+          </div>
+          <ol class="list-decimal list-inside text-gray-700 space-y-2 ml-14">
+            <li>Go to <a href="https://console.firebase.google.com" target="_blank" class="text-blue-600 hover:underline">https://console.firebase.google.com</a></li>
+            <li>Click "Create Project"</li>
+            <li>Enter project name: <code class="bg-gray-100 px-2 py-1 rounded">bwetv-chat</code></li>
+            <li>Follow the setup wizard</li>
+          </ol>
+        </div>
+
+        <!-- Step 2 -->
+        <div>
+          <div class="flex items-start mb-4">
+            <span class="step-number">2</span>
+            <div>
+              <h3 class="text-xl font-bold">Enable Realtime Database</h3>
+              <p class="text-gray-600">Set up your database for storing messages</p>
+            </div>
+          </div>
+          <ol class="list-decimal list-inside text-gray-700 space-y-2 ml-14">
+            <li>Go to <strong>Build → Realtime Database</strong></li>
+            <li>Click <strong>Create Database</strong></li>
+            <li>Choose your region</li>
+            <li>Select <strong>Start in Test Mode</strong></li>
+            <li>Click <strong>Enable</strong></li>
+          </ol>
+        </div>
+
+        <!-- Step 3 -->
+        <div>
+          <div class="flex items-start mb-4">
+            <span class="step-number">3</span>
+            <div>
+              <h3 class="text-xl font-bold">Set Security Rules</h3>
+              <p class="text-gray-600">Configure who can read and write messages</p>
+            </div>
+          </div>
+          <p class="text-gray-700 mb-4 ml-14">Go to <strong>Rules</strong> tab and paste this configuration:</p>
+          <div class="code-block ml-14">
+{
+  "rules": {
+    "channels": {
+      "$channelId": {
+        "messages": {
+          ".read": true,
+          ".write": "auth != null"
+        },
+        "users": {
+          ".read": true,
+          ".write": "auth != null"
+        }
+      }
+    }
+  }
+}
+          </div>
+        </div>
+
+        <!-- Step 4 -->
+        <div>
+          <div class="flex items-start mb-4">
+            <span class="step-number">4</span>
+            <div>
+              <h3 class="text-xl font-bold">Enable Authentication</h3>
+              <p class="text-gray-600">Set up user authentication methods</p>
+            </div>
+          </div>
+          <ol class="list-decimal list-inside text-gray-700 space-y-2 ml-14">
+            <li>Go to <strong>Build → Authentication</strong></li>
+            <li>Click <strong>Get Started</strong></li>
+            <li>Enable <strong>Anonymous</strong> authentication</li>
+            <li>Optionally enable <strong>Email/Password</strong></li>
+          </ol>
+        </div>
+
+        <!-- Step 5 -->
+        <div>
+          <div class="flex items-start mb-4">
+            <span class="step-number">5</span>
+            <div>
+              <h3 class="text-xl font-bold">Get Your Config</h3>
+              <p class="text-gray-600">Copy your Firebase configuration</p>
+            </div>
+          </div>
+          <ol class="list-decimal list-inside text-gray-700 space-y-2 ml-14">
+            <li>Go to <strong>Project Settings</strong> (gear icon)</li>
+            <li>Scroll to "Your apps" section</li>
+            <li>Click on your web app</li>
+            <li>Copy the config object</li>
+            <li>Paste into <code class="bg-gray-100 px-2 py-1 rounded">firebase-chat.js</code></li>
+          </ol>
+        </div>
+
+        <!-- Step 6 -->
+        <div>
+          <div class="flex items-start mb-4">
+            <span class="step-number">6</span>
+            <div>
+              <h3 class="text-xl font-bold">Update Your HTML</h3>
+              <p class="text-gray-600">Add Firebase SDK to your live chat page</p>
+            </div>
+          </div>
+          <p class="text-gray-700 mb-4 ml-14">Add these scripts before <code class="bg-gray-100 px-2 py-1 rounded">firebase-chat.js</code>:</p>
+          <div class="code-block ml-14">
+&lt;script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js"&gt;&lt;/script&gt;
+&lt;script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js"&gt;&lt;/script&gt;
+&lt;script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js"&gt;&lt;/script&gt;
+          </div>
+        </div>
+
+        <!-- Verification -->
+        <div class="bg-green-50 border-l-4 border-green-600 p-4 ml-14">
+          <p class="font-bold text-green-800">✅ Done!</p>
+          <p class="text-green-700">Your Firebase chat is ready. Visit <a href="live-chat.html" class="underline">live-chat.html</a> to test it.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Socket.io Setup -->
+    <section id="socketio-setup" class="mb-16 bg-white rounded-lg shadow-lg p-8">
+      <h2 class="text-3xl font-bold mb-8 text-purple-600">🔌 Socket.io Setup</h2>
+
+      <div class="space-y-8">
+        <!-- Step 1 -->
+        <div>
+          <div class="flex items-start mb-4">
+            <span class="step-number">1</span>
+            <div>
+              <h3 class="text-xl font-bold">Install Node.js</h3>
+              <p class="text-gray-600">Download and install Node.js runtime</p>
+            </div>
+          </div>
+          <ol class="list-decimal list-inside text-gray-700 space-y-2 ml-14">
+            <li>Download from <a href="https://nodejs.org" target="_blank" class="text-blue-600 hover:underline">https://nodejs.org</a></li>
+            <li>Install LTS version</li>
+            <li>Verify with: <code class="bg-gray-100 px-2 py-1 rounded">node --version</code></li>
+          </ol>
+        </div>
+
+        <!-- Step 2 -->
+        <div>
+          <div class="flex items-start mb-4">
+            <span class="step-number">2</span>
+            <div>
+              <h3 class="text-xl font-bold">Install Dependencies</h3>
+              <p class="text-gray-600">Download required packages</p>
+            </div>
+          </div>
+          <p class="text-gray-700 mb-4 ml-14">Run this command in your project directory:</p>
+          <div class="code-block ml-14">
+npm install
+          </div>
+          <p class="text-gray-600 mt-4 ml-14">This installs: express, socket.io, and cors</p>
+        </div>
+
+        <!-- Step 3 -->
+        <div>
+          <div class="flex items-start mb-4">
+            <span class="step-number">3</span>
+            <div>
+              <h3 class="text-xl font-bold">Start the Server</h3>
+              <p class="text-gray-600">Launch your Socket.io chat server</p>
+            </div>
+          </div>
+          <p class="text-gray-700 mb-4 ml-14">Development mode (with auto-reload):</p>
+          <div class="code-block ml-14">
+npm run dev
+          </div>
+          <p class="text-gray-700 mt-4 mb-4 ml-14">Or production mode:</p>
+          <div class="code-block ml-14">
+npm start
+          </div>
+          <p class="text-gray-600 mt-4 ml-14">Server will start on <code class="bg-gray-100 px-2 py-1 rounded">http://localhost:3000</code></p>
+        </div>
+
+        <!-- Step 4 -->
+        <div>
+          <div class="flex items-start mb-4">
+            <span class="step-number">4</span>
+            <div>
+              <h3 class="text-xl font-bold">Test Connection</h3>
+              <p class="text-gray-600">Verify the server is running</p>
+            </div>
+          </div>
+          <ol class="list-decimal list-inside text-gray-700 space-y-2 ml-14">
+            <li>Open <a href="http://localhost:3000" class="text-blue-600 hover:underline">http://localhost:3000</a> in browser</li>
+            <li>Visit <a href="live-chat.html" class="text-blue-600 hover:underline">live-chat.html</a></li>
+            <li>You should see "Connected to chat server" in console</li>
+            <li>Try sending a message!</li>
+          </ol>
+        </div>
+
+        <!-- Deployment -->
+        <div class="bg-blue-50 border-l-4 border-blue-600 p-6 ml-14">
+          <h4 class="font-bold text-blue-800 mb-4">🚀 Deploy to Production</h4>
+          <p class="text-blue-700 mb-4">Popular platforms for Socket.io deployment:</p>
+          <ul class="text-blue-700 space-y-2">
+            <li><strong>Railway:</strong> <a href="https://railway.app" target="_blank" class="underline">railway.app</a> (Drag & drop)</li>
+            <li><strong>Render:</strong> <a href="https://render.com" target="_blank" class="underline">render.com</a> (Free tier)</li>
+            <li><strong>Heroku:</strong> <a href="https://heroku.com" target="_blank" class="underline">heroku.com</a> (Popular)</li>
+            <li><strong>DigitalOcean:</strong> <a href="https://digitalocean.com" target="_blank" class="underline">digitalocean.com</a> (VPS)</li>
+          </ul>
+        </div>
+
+        <!-- Verification -->
+        <div class="bg-green-50 border-l-4 border-green-600 p-4 ml-14">
+          <p class="font-bold text-green-800">✅ Done!</p>
+          <p class="text-green-700">Your Socket.io chat server is running. Visit <a href="live-chat.html" class="underline">live-chat.html</a> to start chatting.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Resources -->
+    <section class="bg-white rounded-lg shadow-lg p-8 mb-12">
+      <h2 class="text-3xl font-bold mb-8">📚 Resources & Documentation</h2>
+
+      <div class="grid md:grid-cols-2 gap-6">
+        <div class="p-6 bg-blue-50 rounded-lg">
+          <h3 class="font-bold text-blue-800 mb-3">Firebase</h3>
+          <ul class="text-sm text-blue-700 space-y-2">
+            <li>• <a href="https://firebase.google.com/docs" target="_blank" class="underline hover:text-blue-900">Official Docs</a></li>
+            <li>• <a href="https://firebase.google.com/pricing" target="_blank" class="underline hover:text-blue-900">Pricing</a></li>
+            <li>• <a href="https://console.firebase.google.com" target="_blank" class="underline hover:text-blue-900">Console</a></li>
+          </ul>
+        </div>
+
+        <div class="p-6 bg-purple-50 rounded-lg">
+          <h3 class="font-bold text-purple-800 mb-3">Socket.io</h3>
+          <ul class="text-sm text-purple-700 space-y-2">
+            <li>• <a href="https://socket.io/docs/" target="_blank" class="underline hover:text-purple-900">Official Docs</a></li>
+            <li>• <a href="https://github.com/socketio/socket.io" target="_blank" class="underline hover:text-purple-900">GitHub</a></li>
+            <li>• <a href="https://socket.io/get-started/" target="_blank" class="underline hover:text-purple-900">Get Started</a></li>
+          </ul>
+        </div>
+
+        <div class="p-6 bg-green-50 rounded-lg">
+          <h3 class="font-bold text-green-800 mb-3">Node.js</h3>
+          <ul class="text-sm text-green-700 space-y-2">
+            <li>• <a href="https://nodejs.org/docs/" target="_blank" class="underline hover:text-green-900">Documentation</a></li>
+            <li>• <a href="https://www.npmjs.com/" target="_blank" class="underline hover:text-green-900">NPM Registry</a></li>
+            <li>• <a href="https://nodejs.org/en/learn/" target="_blank" class="underline hover:text-green-900">Tutorials</a></li>
+          </ul>
+        </div>
+
+        <div class="p-6 bg-yellow-50 rounded-lg">
+          <h3 class="font-bold text-yellow-800 mb-3">BWE TV</h3>
+          <ul class="text-sm text-yellow-700 space-y-2">
+            <li>• <a href="LIVE_CHAT_SETUP.md" class="underline hover:text-yellow-900">Full Setup Guide</a></li>
+            <li>• <a href="live-chat.html" class="underline hover:text-yellow-900">Live Chat Demo</a></li>
+            <li>• <a href="https://github.com/davincevisuals-commits/bwetv" target="_blank" class="underline hover:text-yellow-900">GitHub Repo</a></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="bg-white rounded-lg shadow-lg p-8">
+      <h2 class="text-3xl font-bold mb-8">❓ Frequently Asked Questions</h2>
+
+      <div class="space-y-6">
+        <div>
+          <h3 class="font-bold text-lg mb-2">Which option should I choose?</h3>
+          <p class="text-gray-700"><strong>Firebase</strong> for quick prototyping and small projects. <strong>Socket.io</strong> for enterprise deployments and more control.</p>
+        </div>
+
+        <div>
+          <h3 class="font-bold text-lg mb-2">Is Firebase free?</h3>
+          <p class="text-gray-700">Yes! The Spark plan is free with generous limits (100 concurrent users, 1GB storage). After that, it's pay-as-you-go.</p>
+        </div>
+
+        <div>
+          <h3 class="font-bold text-lg mb-2">Can I switch between Firebase and Socket.io?</h3>
+          <p class="text-gray-700">Yes. The chat interface is the same, you just swap the backend. Start with Firebase, migrate to Socket.io later if needed.</p>
+        </div>
+
+        <div>
+          <h3 class="font-bold text-lg mb-2">How do I moderate the chat?</h3>
+          <p class="text-gray-700">Both systems support moderator roles. Add user IDs to the moderators list to give delete and ban permissions.</p>
+        </div>
+
+        <div>
+          <h3 class="font-bold text-lg mb-2">Can I self-host Firebase?</h3>
+          <p class="text-gray-700">No, Firebase is cloud-only. Use Socket.io or another database if you need complete self-hosting.</p>
+        </div>
+
+        <div>
+          <h3 class="font-bold text-lg mb-2">What about privacy and security?</h3>
+          <p class="text-gray-700">Both solutions support encryption and authentication. Implement proper security rules and use HTTPS in production.</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-yellow-900 text-white text-center p-6 mt-16">
+    <p>© 2026 BWE TV | <a href="index.html" class="hover:underline">Home</a> | <a href="live-chat.html" class="hover:underline">Live Chat</a> | <a href="#" class="hover:underline">Docs</a></p>
+  </footer>
+
+</body>
+</html>

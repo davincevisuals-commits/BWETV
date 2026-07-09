@@ -6,6 +6,32 @@
   <title>BWE TV Shows</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <style>
+    :root {
+      --bwe-bg: #ffffff;
+      --bwe-surface: #f8fafc;
+      --bwe-text: #111827;
+      --bwe-text-muted: #6b7280;
+      --bwe-brand: #7c2d12;
+      --bwe-brand-strong: #78350f;
+      --bwe-primary: #dc2626;
+      --bwe-primary-hover: #b91c1c;
+      --bwe-border: #d1d5db;
+      --bwe-radius: 0.5rem;
+      --bwe-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      --bwe-font-family: "Inter", "Segoe UI", Roboto, Arial, sans-serif;
+    }
+
+    body {
+      font-family: var(--bwe-font-family);
+      color: var(--bwe-text);
+      line-height: 1.6;
+    }
+
+    h1, h2, h3, h4 {
+      letter-spacing: -0.01em;
+      line-height: 1.2;
+    }
+
     .mobile-menu {
       transition: all 0.3s ease;
     }
@@ -16,6 +42,7 @@
     .mobile-menu.visible {
       max-height: 300px;
     }
+
     .show-card {
       transition: all 0.3s ease;
       cursor: pointer;
@@ -31,37 +58,49 @@
       opacity: 0;
       transition: opacity 0.3s ease;
     }
-    .category-filter {
-      transition: all 0.3s ease;
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--bwe-radius);
+      padding: 0.625rem 1rem;
+      font-weight: 700;
+      transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+      border: 1px solid transparent;
     }
+    .btn:hover { transform: translateY(-1px); }
+    .btn-primary { background: var(--bwe-primary); color: #fff; }
+    .btn-primary:hover { background: var(--bwe-primary-hover); }
+    .btn-secondary { background: #fff; color: var(--bwe-text); border-color: var(--bwe-border); }
+    .btn-secondary:hover { background: #f9fafb; }
+
     .category-filter.active {
-      background-color: #dc2626;
+      background-color: var(--bwe-primary);
       color: white;
-      border-color: #dc2626;
+      border-color: var(--bwe-primary);
     }
+
+    .brand-header { background: var(--bwe-brand); }
+    .brand-header-sub { background: var(--bwe-brand-strong); }
+    .section-surface { background: var(--bwe-surface); }
   </style>
 </head>
 <body class="bg-white text-black">
 
-  <!-- Header -->
-  <header class="bg-yellow-900 text-white sticky top-0 z-50 shadow-lg">
+  <header class="brand-header text-white sticky top-0 z-50 shadow-lg">
     <div class="flex justify-between items-center p-4">
       <div class="text-2xl font-bold">BWE <span class="bg-red-600 px-2">TV</span></div>
-      
-      <!-- Desktop Navigation -->
       <nav class="hidden md:flex space-x-6">
         <a href="index.html" class="hover:text-yellow-200 transition">Home</a>
         <a href="schedule.html" class="hover:text-yellow-200 transition">Programs</a>
         <a href="shows.html" class="hover:text-yellow-200 transition">Shows</a>
         <a href="community.html" class="hover:text-yellow-200 transition">Community</a>
       </nav>
-      
-      <!-- Mobile Menu Toggle Button -->
       <button id="mobileMenuBtn" class="md:hidden text-2xl hover:bg-yellow-800 p-2 rounded transition">☰</button>
     </div>
 
-    <!-- Mobile Navigation Menu -->
-    <nav id="mobileMenu" class="mobile-menu hidden bg-yellow-800 md:hidden">
+    <nav id="mobileMenu" class="mobile-menu hidden brand-header-sub md:hidden">
       <div class="flex flex-col p-4 space-y-3">
         <a href="index.html" class="hover:text-yellow-200 transition">Home</a>
         <a href="schedule.html" class="hover:text-yellow-200 transition">Programs</a>
@@ -71,42 +110,28 @@
     </nav>
   </header>
 
-  <!-- Page Title -->
   <section class="p-6 bg-gradient-to-r from-red-600 to-red-800 text-white text-center">
     <h1 class="text-4xl font-bold mb-2">Our Shows</h1>
     <p class="text-lg opacity-90">Browse our complete catalog of engaging programs</p>
   </section>
 
-  <!-- Search & Filter Section -->
-  <section class="p-6 bg-gray-50 border-b">
+  <section class="p-6 section-surface border-b">
     <div class="max-w-6xl mx-auto">
-      <!-- Search Bar -->
       <div class="mb-6">
-        <input 
-          type="text" 
-          id="searchInput" 
-          placeholder="Search shows by title, host, or description..." 
-          class="w-full px-4 py-3 rounded border-2 border-gray-300 focus:border-red-600 focus:outline-none transition"
-          oninput="filterShows()"
-        >
+        <input type="text" id="searchInput" placeholder="Search shows by title, host, or description..." class="w-full px-4 py-3 rounded border-2 border-gray-300 focus:border-red-600 focus:outline-none transition" oninput="filterShows()">
       </div>
-
-      <!-- Category Filters -->
       <div class="mb-4">
         <h3 class="text-sm font-bold text-gray-700 mb-3">Filter by Category</h3>
         <div class="flex flex-wrap gap-2">
-          <button onclick="filterByCategory(event, 'All')" class="category-filter active bg-red-600 text-white border-2 border-red-600 px-4 py-2 rounded font-semibold hover:bg-red-700 transition">All Shows</button>
-          <button onclick="filterByCategory(event, 'News')" class="category-filter bg-white text-black border-2 border-gray-300 px-4 py-2 rounded font-semibold hover:bg-gray-100 transition">📰 News</button>
-          <button onclick="filterByCategory(event, 'Culture')" class="category-filter bg-white text-black border-2 border-gray-300 px-4 py-2 rounded font-semibold hover:bg-gray-100 transition">🎭 Culture</button>
-          <button onclick="filterByCategory(event, 'Health')" class="category-filter bg-white text-black border-2 border-gray-300 px-4 py-2 rounded font-semibold hover:bg-gray-100 transition">💪 Health</button>
-          <button onclick="filterByCategory(event, 'Health')" class="category-filter bg-white text-black border-2 border-gray-300 px-4 py-2 rounded font-semibold hover:bg-gray-100 transition"> Televangelism</button>
-          <button onclick="filterByCategory(event, 'Education')" class="category-filter bg-white text-black border-2 border-gray-300 px-4 py-2 rounded font-semibold hover:bg-gray-100 transition">🎓 Education</button>
-          <button onclick="filterByCategory(event, 'Entertainment')" class="category-filter bg-white text-black border-2 border-gray-300 px-4 py-2 rounded font-semibold hover:bg-gray-100 transition">🎬 Entertainment</button>
-          <button onclick="filterByCategory(event, 'Business')" class="category-filter bg-white text-black border-2 border-gray-300 px-4 py-2 rounded font-semibold hover:bg-gray-100 transition">💼 Business</button>
+          <button onclick="filterByCategory(event, 'All')" class="category-filter active btn btn-primary">All</button>
+          <button onclick="filterByCategory(event, 'News')" class="category-filter btn btn-secondary">📰 News</button>
+          <button onclick="filterByCategory(event, 'Culture')" class="category-filter btn btn-secondary">Culture</button>
+          <button onclick="filterByCategory(event, 'Health')" class="category-filter btn btn-secondary">Health</button>
+          <button onclick="filterByCategory(event, 'Education')" class="category-filter btn btn-secondary">Education</button>
+          <button onclick="filterByCategory(event, 'Entertainment')" class="category-filter btn btn-secondary">Entertainment</button>
+          <button onclick="filterByCategory(event, 'Business')" class="category-filter btn btn-secondary">Business</button>
         </div>
       </div>
-
-      <!-- Sort Options -->
       <div>
         <h3 class="text-sm font-bold text-gray-700 mb-3">Sort by</h3>
         <select id="sortSelect" onchange="sortShows()" class="px-4 py-2 rounded border-2 border-gray-300 focus:border-red-600 focus:outline-none transition">
@@ -118,24 +143,18 @@
     </div>
   </section>
 
-  <!-- Shows Grid -->
   <section class="p-6 bg-white">
     <div class="max-w-6xl mx-auto">
       <div id="resultsInfo" class="mb-4 text-gray-600 font-semibold">Loading shows...</div>
-      
-      <div id="showsContainer" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <!-- Shows will be loaded dynamically -->
-      </div>
-
+      <div id="showsContainer" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
       <div id="noResults" class="text-center py-12 hidden">
         <p class="text-2xl text-gray-500 mb-4">No shows found</p>
-        <button onclick="location.reload()" class="bg-red-600 text-white px-6 py-2 rounded font-bold hover:bg-red-700 transition">Reset Filters</button>
+        <button onclick="location.reload()" class="btn btn-primary">Reset Filters</button>
       </div>
     </div>
   </section>
 
-  <!-- Footer -->
-  <footer class="bg-yellow-900 text-white text-center p-4 mt-8">
+  <footer class="brand-header text-white text-center p-4 mt-8">
     <p>© 2026 BWE TV | <a href="#" class="hover:underline">About</a> | <a href="#" class="hover:underline">Privacy</a> | <a href="#" class="hover:underline">Contact</a></p>
     <div class="flex justify-center space-x-4 mt-2">
       <a href="#" class="hover:text-yellow-200 transition">Facebook</a>
@@ -146,125 +165,5 @@
   </footer>
 
   <script src="content.js"></script>
-
-  <script>
-    // Mobile Menu Toggle
-    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-    const mobileMenu = document.getElementById('mobileMenu');
-
-    mobileMenuBtn.addEventListener('click', function() {
-      mobileMenu.classList.toggle('hidden');
-      mobileMenu.classList.toggle('visible');
-    });
-
-    document.querySelectorAll('#mobileMenu a').forEach(link => {
-      link.addEventListener('click', function() {
-        mobileMenu.classList.add('hidden');
-        mobileMenu.classList.remove('visible');
-      });
-    });
-
-    // Shows Management
-    let filteredShows = [...SHOWS];
-    let currentCategory = 'All';
-    let currentSort = 'rating';
-
-    function renderShows(shows) {
-      const container = document.getElementById('showsContainer');
-      const resultsInfo = document.getElementById('resultsInfo');
-      const noResults = document.getElementById('noResults');
-
-      if (shows.length === 0) {
-        container.innerHTML = '';
-        noResults.classList.remove('hidden');
-        resultsInfo.textContent = 'No shows found';
-        return;
-      }
-
-      noResults.classList.add('hidden');
-      resultsInfo.textContent = `Showing ${shows.length} show${shows.length !== 1 ? 's' : ''}`;
-
-      container.innerHTML = shows.map(show => `
-        <div class="show-card bg-white rounded-lg shadow-lg overflow-hidden">
-          <div class="relative bg-gradient-to-br from-red-600 to-red-800 h-40 flex items-center justify-center overflow-hidden">
-            <span class="text-6xl">${show.thumbnail}</span>
-            <div class="show-overlay absolute inset-0 bg-black bg-opacity-60 flex flex-col justify-center items-center text-white">
-              <p class="text-sm font-bold">Episodes: ${show.episodes}</p>
-              <div class="flex items-center mt-2">
-                <span class="text-yellow-400">★</span>
-                <span class="ml-1 font-bold">${show.rating}</span>
-              </div>
-            </div>
-          </div>
-          
-          <div class="p-4">
-            <h3 class="text-xl font-bold text-gray-800 mb-2">${show.title}</h3>
-            <p class="text-sm text-gray-600 mb-3">${show.description}</p>
-            
-            <div class="mb-3 pb-3 border-b">
-              <p class="text-xs text-gray-600"><strong>Host:</strong> ${show.host}</p>
-              <p class="text-xs text-gray-600"><strong>Schedule:</strong> ${show.airTime}</p>
-            </div>
-
-            <div class="flex justify-between items-center">
-              <span class="bg-red-100 text-red-700 text-xs px-3 py-1 rounded-full font-semibold">${show.category}</span>
-              <button onclick="watchShow('${show.title}')" class="bg-red-600 text-white px-3 py-1 rounded text-sm font-bold hover:bg-red-700 transition">Watch</button>
-            </div>
-          </div>
-        </div>
-      `).join('');
-    }
-
-    function filterByCategory(event, category) {
-      currentCategory = category;
-      
-      // Update button styles
-      document.querySelectorAll('.category-filter').forEach(btn => {
-        btn.classList.remove('active', 'bg-red-600', 'text-white', 'border-red-600');
-        btn.classList.add('bg-white', 'text-black', 'border-gray-300');
-      });
-      event.target.classList.add('active', 'bg-red-600', 'text-white', 'border-red-600');
-      event.target.classList.remove('bg-white', 'text-black', 'border-gray-300');
-
-      filterShows();
-    }
-
-    function filterShows() {
-      const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-      
-      filteredShows = SHOWS.filter(show => {
-        const matchesSearch = show.title.toLowerCase().includes(searchTerm) ||
-                             show.description.toLowerCase().includes(searchTerm) ||
-                             show.host.toLowerCase().includes(searchTerm);
-        const matchesCategory = currentCategory === 'All' || show.category === currentCategory;
-        return matchesSearch && matchesCategory;
-      });
-
-      sortShows();
-    }
-
-    function sortShows() {
-      currentSort = document.getElementById('sortSelect').value;
-
-      if (currentSort === 'rating') {
-        filteredShows.sort((a, b) => b.rating - a.rating);
-      } else if (currentSort === 'episodes') {
-        filteredShows.sort((a, b) => b.episodes - a.episodes);
-      } else if (currentSort === 'name') {
-        filteredShows.sort((a, b) => a.title.localeCompare(b.title));
-      }
-
-      renderShows(filteredShows);
-    }
-
-    function watchShow(showTitle) {
-      alert(`🎥 Playing: ${showTitle}\n\nRedirect to player coming soon!`);
-    }
-
-    // Initialize
-    document.addEventListener('DOMContentLoaded', function() {
-      renderShows(SHOWS);
-    });
-  </script>
 </body>
 </html>

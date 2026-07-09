@@ -80,119 +80,42 @@
         </div>
       </div>
 
- 
-  // Live Chat (Improved)
-  const chatContainer = document.getElementById("chatContainer");
-  const chatInput = document.getElementById("chatInput");
-  const chatBtn = document.getElementById("chatBtn");
-  const newMsgBtn = document.getElementById("newMsgBtn");
-  const charCount = document.getElementById("charCount");
-  const chatStatus = document.getElementById("chatStatus");
+      <!-- Live Chat Panel -->
+      <div class="bg-gray-900 rounded-lg flex flex-col" style="height: 480px;">
+        <div class="flex items-center justify-between p-3 border-b border-gray-700">
+          <h2 class="text-white font-bold text-sm uppercase tracking-wide">💬 Live Chat</h2>
+          <span id="chatStatus" class="text-xs text-gray-400">Connecting...</span>
+        </div>
 
-  const MAX_LENGTH = 300;
-  const NEAR_BOTTOM_THRESHOLD = 80;
+        <!-- Messages -->
+        <div id="chatContainer" class="flex-1 overflow-y-auto p-3 space-y-1"></div>
 
-  function isNearBottom(el) {
-    return el.scrollHeight - el.scrollTop - el.clientHeight < NEAR_BOTTOM_THRESHOLD;
-  }
+        <!-- New messages indicator -->
+        <button id="newMsgBtn" class="hidden mx-3 mb-1 bg-blue-600 text-white text-xs py-1 px-3 rounded-full self-center">
+          ↓ New messages
+        </button>
 
-  function scrollToBottom() {
-    chatContainer.scrollTop = chatContainer.scrollHeight;
-    newMsgBtn.classList.add("hidden");
-  }
-
-  function formatTime(ts) {
-    const d = new Date(ts || Date.now());
-    return d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
-  }
-
-  function validateChatInput() {
-    const msg = chatInput.value.trim();
-    charCount.textContent = `${chatInput.value.length}/${MAX_LENGTH}`;
-    chatBtn.disabled = !msg || msg.length > MAX_LENGTH;
-  }
-
-  chatInput.addEventListener("input", validateChatInput);
-
-  chatInput.addEventListener("keydown", (e) => {
-    if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault();
-      if (!chatBtn.disabled) sendMessage();
-    }
-  });
-
-  newMsgBtn.addEventListener("click", scrollToBottom);
-
-  function sendMessage() {
-    const msg = chatInput.value.trim();
-    if (!msg || msg.length > MAX_LENGTH) return;
-
-    const payload = {
-      text: msg,
-      user: auth.currentUser ? (auth.currentUser.email || "guest") : "guest",
-      timestamp: Date.now()
-    };
-
-    chatBtn.disabled = true;
-    chatStatus.textContent = "Sending...";
-
-    rtdb.ref("chat").push(payload)
-      .then(() => {
-        chatInput.value = "";
-        validateChatInput();
-        chatStatus.textContent = "Connected";
-      })
-      .catch(() => {
-        chatStatus.textContent = "Send failed";
-        alert("Message failed to send. Please try again.");
-      })
-      .finally(() => {
-        validateChatInput();
-      });
-  }
-
-  chatBtn.addEventListener("click", sendMessage);
-
-  rtdb.ref(".info/connected").on("value", (snap) => {
-    chatStatus.textContent = snap.val() ? "Connected" : "Reconnecting...";
-  });
-
-  rtdb.ref("chat").limitToLast(100).on("child_added", (snapshot) => {
-    const msg = snapshot.val() || {};
-    const nearBottom = isNearBottom(chatContainer);
-
-    const isMe = (auth.currentUser && msg.user === auth.currentUser.email);
-    const row = document.createElement("div");
-    row.className = `mb-2 flex ${isMe ? "justify-end" : "justify-start"}`;
-
-    const bubble = document.createElement("div");
-    bubble.className = `max-w-[85%] p-2 rounded shadow-sm border ${
-      isMe ? "bg-blue-600 text-white border-blue-700" : "bg-white text-black border-gray-200"
-    }`;
-
-    const meta = document.createElement("div");
-    meta.className = `text-[11px] mb-1 ${isMe ? "text-blue-100" : "text-gray-500"}`;
-    meta.textContent = `${msg.user || "guest"} • ${formatTime(msg.timestamp)}`;
-
-    const body = document.createElement("div");
-    body.className = "text-sm whitespace-pre-wrap break-words";
-    body.textContent = msg.text || "";
-
-    bubble.appendChild(meta);
-    bubble.appendChild(body);
-    row.appendChild(bubble);
-    chatContainer.appendChild(row);
-
-    if (nearBottom) {
-      scrollToBottom();
-    } else {
-      newMsgBtn.classList.remove("hidden");
-    }
-  });
-
-  // initial state
-  validateChatInput();
-</script>
+        <!-- Input area -->
+        <div class="p-3 border-t border-gray-700">
+          <div class="flex gap-2">
+            <textarea
+              id="chatInput"
+              rows="2"
+              maxlength="300"
+              placeholder="Say something…"
+              class="flex-1 bg-gray-800 text-white text-sm rounded p-2 resize-none focus:outline-none focus:ring-1 focus:ring-blue-500"
+            ></textarea>
+            <button
+              id="chatBtn"
+              disabled
+              class="bg-blue-600 text-white px-3 py-2 rounded text-sm font-bold hover:bg-blue-700 disabled:opacity-40 disabled:cursor-not-allowed transition self-end"
+            >Send</button>
+          </div>
+          <div class="text-right mt-1">
+            <span id="charCount" class="text-xs text-gray-500">0/300</span>
+          </div>
+        </div>
+      </div>
 
     </div>
   </section>
@@ -202,6 +125,7 @@
     <div class="max-w-6xl mx-auto">
       <h2 class="text-3xl text-red-600 mb-6 font-bold">Today's Programs</h2>
       <div id="programsContainer" class="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <!-- Skeleton placeholder shown until JS loads programs -->
         <div class="bg-white rounded shadow p-4 program-card">
           <div class="h-20 bg-gray-300 rounded mb-3"></div>
           <div class="h-4 bg-gray-300 rounded mb-2"></div>
@@ -290,6 +214,7 @@
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
 
   <script>
+    // ── Firebase Init ─────────────────────────────────────────────────────────
     const firebaseConfig = {
       apiKey: "AIzaSyCg9fxgrXlEuKW_m5MvDnG26Uf6lLdiYik",
       authDomain: "bwetv-ug.firebaseapp.com",
@@ -306,7 +231,7 @@
     const auth = firebase.auth();
     const rtdb = firebase.database();
 
-    // Sign Up
+    // ── Auth ──────────────────────────────────────────────────────────────────
     document.getElementById("signupForm").addEventListener("submit", function(e) {
       e.preventDefault();
       const email = document.getElementById("signupEmail").value;
@@ -319,7 +244,6 @@
         .catch(error => alert(error.message));
     });
 
-    // Login
     document.getElementById("loginForm").addEventListener("submit", function(e) {
       e.preventDefault();
       const email = document.getElementById("loginEmail").value;
@@ -332,7 +256,6 @@
         .catch(error => alert(error.message));
     });
 
-    // Logout
     document.getElementById("logoutBtn").addEventListener("click", function() {
       auth.signOut().then(() => {
         alert("Logged out successfully");
@@ -340,44 +263,125 @@
       });
     });
 
-    // Check login state
     auth.onAuthStateChanged(user => {
-      if (user) {
-        document.getElementById("authStatus").innerText = "Logged in as " + (user.email || "guest");
-      } else {
-        document.getElementById("authStatus").innerText = "Not logged in";
+      document.getElementById("authStatus").innerText = user
+        ? "Logged in as " + (user.email || "guest")
+        : "Not logged in";
+    });
+
+    // ── Live Chat ─────────────────────────────────────────────────────────────
+    const chatContainer = document.getElementById("chatContainer");
+    const chatInput     = document.getElementById("chatInput");
+    const chatBtn       = document.getElementById("chatBtn");
+    const newMsgBtn     = document.getElementById("newMsgBtn");
+    const charCount     = document.getElementById("charCount");
+    const chatStatus    = document.getElementById("chatStatus");
+
+    const MAX_LENGTH            = 300;
+    const NEAR_BOTTOM_THRESHOLD = 80;
+
+    function isNearBottom(el) {
+      return el.scrollHeight - el.scrollTop - el.clientHeight < NEAR_BOTTOM_THRESHOLD;
+    }
+
+    function scrollToBottom() {
+      chatContainer.scrollTop = chatContainer.scrollHeight;
+      newMsgBtn.classList.add("hidden");
+    }
+
+    function formatChatTime(ts) {
+      return new Date(ts || Date.now()).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+    }
+
+    function validateChatInput() {
+      const msg = chatInput.value.trim();
+      charCount.textContent = `${chatInput.value.length}/${MAX_LENGTH}`;
+      chatBtn.disabled = !msg || chatInput.value.length > MAX_LENGTH;
+    }
+
+    chatInput.addEventListener("input", validateChatInput);
+
+    chatInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" && !e.shiftKey) {
+        e.preventDefault();
+        if (!chatBtn.disabled) sendMessage();
       }
     });
 
-    // Live Chat
-    document.getElementById("chatBtn").addEventListener("click", () => {
-      const input = document.getElementById("chatInput");
-      const msg = input.value.trim();
-      if (!msg) return;
+    newMsgBtn.addEventListener("click", scrollToBottom);
 
-      rtdb.ref("chat").push({
+    function sendMessage() {
+      const msg = chatInput.value.trim();
+      if (!msg || msg.length > MAX_LENGTH) return;
+
+      const payload = {
         text: msg,
         user: auth.currentUser ? (auth.currentUser.email || "guest") : "guest",
         timestamp: Date.now()
-      });
+      };
 
-      input.value = "";
+      chatBtn.disabled = true;
+      chatStatus.textContent = "Sending...";
+
+      rtdb.ref("chat").push(payload)
+        .then(() => {
+          chatInput.value = "";
+          validateChatInput();
+          chatStatus.textContent = "Connected";
+        })
+        .catch(() => {
+          chatStatus.textContent = "Send failed";
+          alert("Message failed to send. Please try again.");
+        })
+        .finally(() => {
+          validateChatInput();
+        });
+    }
+
+    chatBtn.addEventListener("click", sendMessage);
+
+    rtdb.ref(".info/connected").on("value", (snap) => {
+      chatStatus.textContent = snap.val() ? "Connected" : "Reconnecting...";
     });
 
-    rtdb.ref("chat").limitToLast(100).on("child_added", snapshot => {
-      const msg = snapshot.val();
-      const div = document.createElement("div");
-      div.className = "p-2 border rounded bg-white mb-2";
-      div.textContent = `${msg.user}: ${msg.text}`;
+    rtdb.ref("chat").limitToLast(100).on("child_added", (snapshot) => {
+      const msg       = snapshot.val() || {};
+      const nearBottom = isNearBottom(chatContainer);
+      const isMe      = auth.currentUser && msg.user === auth.currentUser.email;
 
-      const container = document.getElementById("chatContainer");
-      container.appendChild(div);
-      container.scrollTop = container.scrollHeight;
+      const row = document.createElement("div");
+      row.className = `mb-2 flex ${isMe ? "justify-end" : "justify-start"}`;
+
+      const bubble = document.createElement("div");
+      bubble.className = `max-w-xs p-2 rounded shadow-sm border ${
+        isMe ? "bg-blue-600 text-white border-blue-700" : "bg-white text-black border-gray-200"
+      }`;
+
+      const meta = document.createElement("div");
+      meta.className = `text-xs mb-1 ${isMe ? "text-blue-100" : "text-gray-500"}`;
+      meta.textContent = `${msg.user || "guest"} • ${formatChatTime(msg.timestamp)}`;
+
+      const body = document.createElement("div");
+      body.className = "text-sm whitespace-pre-wrap break-words";
+      body.textContent = msg.text || "";
+
+      bubble.appendChild(meta);
+      bubble.appendChild(body);
+      row.appendChild(bubble);
+      chatContainer.appendChild(row);
+
+      if (nearBottom) {
+        scrollToBottom();
+      } else {
+        newMsgBtn.classList.remove("hidden");
+      }
     });
 
-    // Mobile Menu Toggle
+    validateChatInput();
+
+    // ── Mobile Menu ───────────────────────────────────────────────────────────
     const mobileMenuBtn = document.getElementById("mobileMenuBtn");
-    const mobileMenu = document.getElementById("mobileMenu");
+    const mobileMenu    = document.getElementById("mobileMenu");
 
     mobileMenuBtn.addEventListener("click", function() {
       mobileMenu.classList.toggle("hidden");
@@ -391,7 +395,7 @@
       });
     });
 
-    // Share Function
+    // ── Share ─────────────────────────────────────────────────────────────────
     function shareVideo() {
       if (navigator.share) {
         navigator.share({
@@ -404,11 +408,10 @@
       }
     }
 
-    // Load programs on page load
-    document.addEventListener("DOMContentLoaded", loadPrograms);
-
+    // ── Programs ──────────────────────────────────────────────────────────────
     function loadPrograms() {
       const container = document.getElementById("programsContainer");
+      if (!container) return;
       container.innerHTML = "";
 
       PROGRAMS.forEach(program => {
@@ -427,6 +430,8 @@
         container.appendChild(card);
       });
     }
+
+    document.addEventListener("DOMContentLoaded", loadPrograms);
   </script>
 </body>
 </html>

@@ -31,7 +31,10 @@
     const chatPath = options.chatPath || DEFAULT_CHAT_PATH;
     const limit = options.limit || DEFAULT_LIMIT;
 
-    if (!chatContainer || !chatInput || !chatBtn || !rtdb) return null;
+    if (!chatContainer || !chatInput || !chatBtn || !rtdb) {
+      console.error("Live chat initialization failed: missing required elements or database instance.");
+      return null;
+    }
 
     const renderedMessageIds = new Set();
     const connectedRef = rtdb.ref(".info/connected");

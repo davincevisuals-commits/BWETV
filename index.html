@@ -284,7 +284,66 @@
     </div>
   </footer>
 
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+  <script src="shared-live-chat.js"></script>
   <script src="https://vjs.zencdn.net/7.20.3/video.min.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyCg9fxgrXlEuKW_m5MvDnG26Uf6lLdiYik",
+      authDomain: "bwetv-ug.firebaseapp.com",
+      projectId: "bwetv-ug",
+      storageBucket: "bwetv-ug.firebasestorage.app",
+      messagingSenderId: "481870926362",
+      appId: "1:481870926362:web:f406a0f135449ccfaa77a3",
+      measurementId: "G-SJ5YJH2G7C",
+      databaseURL: "https://bwetv-ug-default-rtdb.firebaseio.com/"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+
+    const auth = firebase.auth();
+    const rtdb = firebase.database();
+    const authStatus = document.getElementById("authStatus");
+
+    document.getElementById("signupForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const email = document.getElementById("signupEmail").value;
+      const password = document.getElementById("signupPassword").value;
+      auth.createUserWithEmailAndPassword(email, password).catch(err => alert(err.message));
+    });
+
+    document.getElementById("loginForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const email = document.getElementById("loginEmail").value;
+      const password = document.getElementById("loginPassword").value;
+      auth.signInWithEmailAndPassword(email, password).catch(err => alert(err.message));
+    });
+
+    document.getElementById("logoutBtn").addEventListener("click", () => {
+      auth.signOut().catch(err => alert(err.message));
+    });
+
+    auth.onAuthStateChanged((user) => {
+      authStatus.textContent = user ? `Logged in as ${user.email || "guest"}` : "Not logged in";
+    });
+
+    auth.signInAnonymously().catch(() => {});
+
+    BWELiveChat.init({
+      rtdb,
+      auth,
+      chatContainerId: "chatContainer",
+      chatInputId: "chatInput",
+      chatBtnId: "chatBtn",
+      chatStatusId: "chatStatus",
+      newMsgBtnId: "newMsgBtn",
+      charCountId: "charCount",
+      chatPath: "chat",
+      limit: 100
+    });
+  </script>
   <script src="content.js"></script>
 </body>
 </html>

@@ -70,6 +70,7 @@
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+  <script src="shared-live-chat.js"></script>
 
   <script>
     // Firebase config
@@ -112,24 +113,15 @@
       }
     });
 
-    // Live Chat
-    document.getElementById("chatBtn").addEventListener("click", () => {
-      const msg = document.getElementById("chatInput").value;
-      if (msg.trim() !== "") {
-        rtdb.ref("chat").push({
-          text: msg,
-          user: auth.currentUser ? auth.currentUser.email || "guest" : "guest",
-          timestamp: Date.now()
-        });
-        document.getElementById("chatInput").value = "";
-      }
-    });
-    rtdb.ref("chat").on("child_added", snapshot => {
-      const msg = snapshot.val();
-      const div = document.createElement("div");
-      div.className = "p-2 border rounded bg-white";
-      div.innerHTML = `<strong>${msg.user}</strong>: ${msg.text}`;
-      document.getElementById("chatContainer").appendChild(div);
+    // Live Chat (shared with Home page)
+    BWELiveChat.init({
+      rtdb,
+      auth,
+      chatContainerId: "chatContainer",
+      chatInputId: "chatInput",
+      chatBtnId: "chatBtn",
+      chatPath: "chat",
+      limit: 100
     });
 
     // Forums

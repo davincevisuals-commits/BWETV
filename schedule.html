@@ -93,7 +93,7 @@
         <p class="mx-auto mb-6 max-w-3xl text-lg opacity-90">See what is on air now, plan your viewing, and share the daily lineup with your audience.</p>
         <div id="currentShowInfo" class="mb-6"><p class="text-lg font-semibold">Loading...</p></div>
         <div class="mx-auto mb-4 max-w-4xl overflow-hidden rounded-xl shadow-2xl">
-          <video id="livePlayer" class="video-js vjs-default-skin w-full h-auto" controls autoplay preload="metadata" data-setup='{"fluid": true, "aspectRatio": "16:9"}'>
+          <video id="livePlayer" class="video-js vjs-default-skin w-full h-auto" controls autoplay muted preload="metadata" data-setup='{"fluid": true, "aspectRatio": "16:9"}'>
             <source src="http://yourserverip:8080/live/streamkey.m3u8" type="application/x-mpegURL">
             <source src="video.mp4" type="video/mp4">
           </video>

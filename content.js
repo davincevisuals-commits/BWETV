@@ -243,6 +243,8 @@ const STREAM_CONFIG = {
   viewerCount: Math.floor(Math.random() * 5000) + 1000
 };
 
+// Firebase client config is public; protect access with Security Rules:
+// https://firebase.google.com/docs/rules
 const FIREBASE_CONFIG = {
   apiKey: "AIzaSyCg9fxgrXlEuKW_m5MvDnG26Uf6lLdiYik",
   authDomain: "bwetv-ug.firebaseapp.com",

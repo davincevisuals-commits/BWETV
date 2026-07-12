@@ -243,8 +243,8 @@ const STREAM_CONFIG = {
   viewerCount: Math.floor(Math.random() * 5000) + 1000
 };
 
-// Firebase client config is public; protect access with Security Rules:
-// https://firebase.google.com/docs/rules
+// Firebase client config is public; protect the exposed chat/posts paths with
+// Authentication + Security Rules: https://firebase.google.com/docs/rules
 const FIREBASE_CONFIG = {
   apiKey: "AIzaSyCg9fxgrXlEuKW_m5MvDnG26Uf6lLdiYik",
   authDomain: "bwetv-ug.firebaseapp.com",
@@ -333,7 +333,7 @@ function getCurrentShow() {
 
   for (const program of schedule) {
     const startTime = parseProgramTime(program.time, now);
-    const duration = parseInt(program.duration, 10) || 0;
+    const duration = parseInt(program.duration, 10) || 30;
     const endTime = new Date(startTime.getTime() + duration * 60000);
 
     if (now >= startTime && now < endTime) {
@@ -1179,6 +1179,7 @@ function initializePageEnhancements() {
     setupHomeAuth(services);
     setupCommunityAuth(services);
     setupSharedChat(services, {
+      // Pages with an explicit login section (Community) control guest sign-in manually.
       autoSignIn: !document.getElementById("loginSection")
     });
     setupCommunityPosts(services);

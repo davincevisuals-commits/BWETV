@@ -41,6 +41,7 @@
       if (chatStatus) chatStatus.textContent = text;
     }
 
+    // Removes most ASCII control characters while keeping tab/newline/carriage return.
     function normalizeMessage(text) {
       return text.replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/g, "").trim();
     }
@@ -109,7 +110,8 @@
           validateChatInput();
           setStatus("Connected");
         })
-        .catch(() => {
+        .catch((err) => {
+          console.error("Chat send error:", err);
           setStatus("Send failed. Please try again.");
         })
         .finally(validateChatInput);

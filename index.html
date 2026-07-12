@@ -340,7 +340,10 @@
       authStatus.textContent = user ? `Logged in as ${user.email || "guest"}` : "Not logged in";
     });
 
-    auth.signInAnonymously().catch(() => {});
+    auth.signInAnonymously().catch((err) => {
+      console.error("Anonymous sign-in failed:", err);
+      authStatus.textContent = "Guest chat sign-in failed. Please log in to chat.";
+    });
 
     BWELiveChat.init({
       rtdb,

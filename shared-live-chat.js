@@ -41,6 +41,10 @@
       if (chatStatus) chatStatus.textContent = text;
     }
 
+    function normalizeMessage(text) {
+      return text.replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/g, "").trim();
+    }
+
     function scrollToBottom() {
       chatContainer.scrollTop = chatContainer.scrollHeight;
       if (newMsgBtn) newMsgBtn.classList.add("hidden");
@@ -89,7 +93,7 @@
     }
 
     function sendMessage() {
-      const msg = chatInput.value.trim();
+      const msg = normalizeMessage(chatInput.value);
       if (!msg || msg.length > maxLength) return;
 
       chatBtn.disabled = true;
@@ -106,8 +110,7 @@
           setStatus("Connected");
         })
         .catch(() => {
-          setStatus("Send failed");
-          alert("Message failed to send. Please try again.");
+          setStatus("Send failed. Please try again.");
         })
         .finally(validateChatInput);
     }

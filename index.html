@@ -306,23 +306,34 @@
     const auth = firebase.auth();
     const rtdb = firebase.database();
     const authStatus = document.getElementById("authStatus");
+    const AUTH_ERROR_MESSAGES = {
+      "auth/invalid-email": "Please enter a valid email address.",
+      "auth/user-not-found": "No account found for that email.",
+      "auth/wrong-password": "Incorrect password. Please try again.",
+      "auth/email-already-in-use": "That email is already registered.",
+      "auth/weak-password": "Password should be at least 6 characters."
+    };
+
+    function showAuthError(err) {
+      authStatus.textContent = AUTH_ERROR_MESSAGES[err.code] || "Authentication failed. Please try again.";
+    }
 
     document.getElementById("signupForm").addEventListener("submit", (e) => {
       e.preventDefault();
       const email = document.getElementById("signupEmail").value;
       const password = document.getElementById("signupPassword").value;
-      auth.createUserWithEmailAndPassword(email, password).catch(err => alert(err.message));
+      auth.createUserWithEmailAndPassword(email, password).catch(showAuthError);
     });
 
     document.getElementById("loginForm").addEventListener("submit", (e) => {
       e.preventDefault();
       const email = document.getElementById("loginEmail").value;
       const password = document.getElementById("loginPassword").value;
-      auth.signInWithEmailAndPassword(email, password).catch(err => alert(err.message));
+      auth.signInWithEmailAndPassword(email, password).catch(showAuthError);
     });
 
     document.getElementById("logoutBtn").addEventListener("click", () => {
-      auth.signOut().catch(err => alert(err.message));
+      auth.signOut().catch(showAuthError);
     });
 
     auth.onAuthStateChanged((user) => {

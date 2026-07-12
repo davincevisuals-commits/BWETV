@@ -481,6 +481,14 @@ function setText(id, value) {
   }
 }
 
+function getToneClass(tone, toneClasses) {
+  if (tone && toneClasses[tone]) {
+    return toneClasses[tone];
+  }
+
+  return toneClasses.default || "";
+}
+
 function setDisabled(element, disabled) {
   if (element) {
     element.disabled = disabled;
@@ -492,7 +500,11 @@ function setAuthStatus(message, tone = "default") {
   if (!status) return;
 
   status.textContent = message;
-  status.className = `text-sm mt-3 ${tone === "error" ? "text-red-700" : tone === "success" ? "text-green-700" : "text-gray-700"}`;
+  status.className = `text-sm mt-3 ${getToneClass(tone, {
+    error: "text-red-700",
+    success: "text-green-700",
+    default: "text-gray-700"
+  })}`;
 }
 
 function isNearBottom(element) {
@@ -511,7 +523,11 @@ function scrollChatToBottom(chatContainer, newMessageButton) {
 function setChatStatus(statusElement, message, tone = "neutral") {
   if (!statusElement) return;
   statusElement.textContent = message;
-  statusElement.className = `text-xs ${tone === "error" ? "text-red-300" : tone === "success" ? "text-green-300" : "text-gray-400"}`;
+  statusElement.className = `text-xs ${getToneClass(tone, {
+    error: "text-red-300",
+    success: "text-green-300",
+    default: "text-gray-400"
+  })}`;
 }
 
 function validateChatInput(chatInput, chatButton, charCount) {
@@ -763,7 +779,11 @@ function setupCommunityAuth(services) {
   const updateCommunityStatus = (message, tone = "default") => {
     if (!communityStatus) return;
     communityStatus.textContent = message;
-    communityStatus.className = `mt-4 text-sm ${tone === "error" ? "text-red-700" : tone === "success" ? "text-green-700" : "text-gray-600"}`;
+    communityStatus.className = `mt-4 text-sm ${getToneClass(tone, {
+      error: "text-red-700",
+      success: "text-green-700",
+      default: "text-gray-600"
+    })}`;
   };
 
   const withAuth = async (callback) => {

@@ -522,13 +522,17 @@ function scrollChatToBottom(chatContainer, newMessageButton) {
   }
 }
 
-function setChatStatus(statusElement, message, tone = "neutral") {
-  if (!statusElement) return;
-  statusElement.textContent = message;
-  statusElement.className = `text-xs ${getToneClass(tone, {
+function setChatStatus(statusElement, message, tone = "neutral", toneClasses = {
     error: "text-red-300",
     success: "text-green-300",
     default: "text-gray-400"
+  }) {
+  if (!statusElement) return;
+  statusElement.textContent = message;
+  statusElement.className = `text-xs ${getToneClass(tone, {
+    error: toneClasses.error,
+    success: toneClasses.success,
+    default: toneClasses.default
   })}`;
 }
 
@@ -588,16 +592,24 @@ function setupSharedChat(services, options = {}) {
     return;
   }
 
+  if (chatContainer.dataset.chatInitialized === "true") {
+    return;
+  }
+
   if (!auth || !rtdb) {
     setDisabled(chatInput, true);
     setDisabled(chatButton, true);
-    setChatStatus(chatStatus, "Chat unavailable", "error");
+    setChatStatus(chatStatus, "Chat unavailable", "error", options.statusToneClasses);
     return;
   }
 
   const messagesRef = rtdb.ref(options.path || DEFAULT_CHAT_PATH).limitToLast(options.limit || 100);
   const connectedRef = rtdb.ref(".info/connected");
+  const requireAuth = Boolean(options.requireAuth);
   const state = { hasMessages: false, initialized: false };
+
+  chatContainer.setAttribute("role", chatContainer.getAttribute("role") || "log");
+  chatContainer.setAttribute("aria-relevant", chatContainer.getAttribute("aria-relevant") || "additions text");
 
   const maybeSignInGuest = async () => {
     if (options.autoSignIn === false) {
@@ -607,9 +619,24 @@ function setupSharedChat(services, options = {}) {
       try {
         await auth.signInAnonymously();
       } catch (error) {
-        setChatStatus(chatStatus, "Sign-in required", "error");
+        setChatStatus(chatStatus, "Sign-in required", "error", options.statusToneClasses);
       }
     }
+  };
+
+  const updateAuthDependentState = () => {
+    const hasUser = Boolean(auth.currentUser);
+    const inputLocked = requireAuth && !hasUser;
+    setDisabled(chatInput, inputLocked);
+    if (inputLocked) {
+      chatInput.placeholder = "Sign in to join the chat.";
+      setDisabled(chatButton, true);
+      setChatStatus(chatStatus, "Sign in to chat", "default", options.statusToneClasses);
+      return;
+    }
+
+    chatInput.placeholder = options.placeholder || "Type a message...";
+    validateChatInput(chatInput, chatButton, charCount);
   };
 
   const sendMessage = async () => {
@@ -621,8 +648,8 @@ function setupSharedChat(services, options = {}) {
     }
 
     const currentUser = auth.currentUser;
-    if (!currentUser) {
-      setChatStatus(chatStatus, "Unable to send", "error");
+    if (!currentUser || (requireAuth && currentUser.isAnonymous)) {
+      setChatStatus(chatStatus, "Unable to send", "error", options.statusToneClasses);
       return;
     }
 
@@ -634,15 +661,15 @@ function setupSharedChat(services, options = {}) {
     };
 
     setDisabled(chatButton, true);
-    setChatStatus(chatStatus, "Sending…");
+    setChatStatus(chatStatus, "Sending…", "default", options.statusToneClasses);
 
     try {
       await rtdb.ref(options.path || DEFAULT_CHAT_PATH).push(payload);
       chatInput.value = "";
       validateChatInput(chatInput, chatButton, charCount);
-      setChatStatus(chatStatus, "Connected", "success");
+      setChatStatus(chatStatus, "Connected", "success", options.statusToneClasses);
     } catch (error) {
-      setChatStatus(chatStatus, "Send failed", "error");
+      setChatStatus(chatStatus, "Send failed", "error", options.statusToneClasses);
       updateShareStatus("Message failed to send. Please try again.");
     }
   };
@@ -666,7 +693,16 @@ function setupSharedChat(services, options = {}) {
     }
 
     connectedRef.on("value", (snapshot) => {
-      setChatStatus(chatStatus, snapshot.val() ? "Connected" : "Reconnecting…", snapshot.val() ? "success" : "neutral");
+      if (requireAuth && !auth.currentUser) {
+        setChatStatus(chatStatus, "Sign in to chat", "default", options.statusToneClasses);
+        return;
+      }
+      setChatStatus(
+        chatStatus,
+        snapshot.val() ? "Connected" : "Reconnecting…",
+        snapshot.val() ? "success" : "neutral",
+        options.statusToneClasses
+      );
     });
 
     messagesRef.on("child_added", (snapshot) => {
@@ -678,15 +714,19 @@ function setupSharedChat(services, options = {}) {
     });
 
     auth.onAuthStateChanged((user) => {
+      updateAuthDependentState();
       if (user) {
-        setChatStatus(chatStatus, `Connected as ${getDisplayName(user)}`, "success");
+        setChatStatus(chatStatus, `Connected as ${getDisplayName(user)}`, "success", options.statusToneClasses);
+      } else if (requireAuth) {
+        setChatStatus(chatStatus, "Sign in to chat", "default", options.statusToneClasses);
       }
     });
 
+    chatContainer.dataset.chatInitialized = "true";
     state.initialized = true;
   }
 
-  validateChatInput(chatInput, chatButton, charCount);
+  updateAuthDependentState();
   maybeSignInGuest();
 }
 
@@ -1071,17 +1111,36 @@ function initializeMobileMenu() {
   const button = document.getElementById("mobileMenuBtn");
   const menu = document.getElementById("mobileMenu");
   if (!button || !menu) return;
+  if (button.dataset.menuBound === "true") return;
+
+  const closeMenu = () => {
+    button.setAttribute("aria-expanded", "false");
+    menu.classList.add("hidden");
+    menu.classList.remove("visible");
+  };
 
   button.setAttribute("aria-expanded", "false");
   button.addEventListener("click", toggleMobileMenu);
 
   menu.querySelectorAll("a").forEach((link) => {
     link.addEventListener("click", () => {
-      button.setAttribute("aria-expanded", "false");
-      menu.classList.add("hidden");
-      menu.classList.remove("visible");
+      closeMenu();
     });
   });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      closeMenu();
+    }
+  });
+
+  document.addEventListener("click", (event) => {
+    if (!menu.contains(event.target) && !button.contains(event.target)) {
+      closeMenu();
+    }
+  });
+
+  button.dataset.menuBound = "true";
 }
 
 function highlightCurrentNav() {
@@ -1092,6 +1151,8 @@ function highlightCurrentNav() {
     link.classList.toggle("nav-link-active", isActive);
     if (isActive) {
       link.setAttribute("aria-current", "page");
+    } else {
+      link.removeAttribute("aria-current");
     }
   });
 }
@@ -1176,11 +1237,19 @@ function initializePageEnhancements() {
 
   const services = getFirebaseServices();
   if (services) {
+    const isCommunityPage = Boolean(document.getElementById("loginSection"));
     setupHomeAuth(services);
     setupCommunityAuth(services);
     setupSharedChat(services, {
-      // Pages with an explicit login section (Community) control guest sign-in manually.
-      autoSignIn: !document.getElementById("loginSection")
+      autoSignIn: true,
+      placeholder: "Say something…",
+      statusToneClasses: isCommunityPage
+        ? {
+          error: "text-red-600",
+          success: "text-green-600",
+          default: "text-gray-500"
+        }
+        : undefined
     });
     setupCommunityPosts(services);
     setupCommunityActions();

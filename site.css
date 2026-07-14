@@ -8,6 +8,7 @@ html {
 
 body {
   min-height: 100vh;
+  text-rendering: optimizeLegibility;
 }
 
 .skip-link {
@@ -78,6 +79,10 @@ main {
   gap: 0.75rem 1.5rem;
 }
 
+.footer-link-grid a {
+  text-decoration: none;
+}
+
 .hero-copy {
   max-width: 40rem;
 }
@@ -90,5 +95,23 @@ main {
   .stack-mobile {
     flex-direction: column;
     align-items: stretch;
+  }
+
+  .footer-link-grid {
+    gap: 0.75rem 1rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }

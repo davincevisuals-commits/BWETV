@@ -611,6 +611,7 @@ function setupSharedChat(services, options = {}) {
 
   chatContainer.setAttribute("role", chatContainer.getAttribute("role") || "log");
   chatContainer.setAttribute("aria-relevant", chatContainer.getAttribute("aria-relevant") || "additions text");
+  chatContainer.setAttribute("aria-atomic", chatContainer.getAttribute("aria-atomic") || "false");
 
   const maybeSignInGuest = async () => {
     if (options.autoSignIn === false) {
@@ -876,6 +877,7 @@ function setupCommunityAuth(services) {
 
 function setupCommunityPosts(services) {
   const { auth, db } = services || {};
+  const serverTimestamp = window.firebase?.firestore?.FieldValue?.serverTimestamp;
   const postInput = document.getElementById("postInput");
   const postButton = document.getElementById("postBtn");
   const postsContainer = document.getElementById("postsContainer");
@@ -893,7 +895,7 @@ function setupCommunityPosts(services) {
       await db.collection("posts").add({
         text,
         user: getDisplayName(auth.currentUser),
-        timestamp: window.firebase.firestore.FieldValue.serverTimestamp()
+        timestamp: typeof serverTimestamp === "function" ? serverTimestamp() : Date.now()
       });
       postInput.value = "";
       if (postStatus) {

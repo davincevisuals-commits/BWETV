@@ -17,6 +17,8 @@ A modern, responsive web platform for BWE TV Live streaming and community engage
 - **schedule.html** - Daily TV schedule and programming
 - **shows.html** - Show catalog and details
 - **community.html** - Community features and engagement
+- **live-chat.html** - Dedicated live chat experience
+- **about.html / privacy.html / contact.html** - Supporting information pages
 
 ## Technologies Used
 
@@ -41,14 +43,20 @@ bwetv/
 ## Getting Started
 
 1. Clone the repository
-2. Open any `.html` file in your web browser
-3. Navigate using the menu to explore all pages
+2. Run `npm start` if you want to launch the Socket.io chat server locally
+3. Open any `.html` file in your web browser
+4. Navigate using the menu to explore all pages
 
 ## Live Streaming Setup
 
 To connect your streaming server:
 1. Replace `http://yourserverip:8080/live/streamkey.m3u8` with your actual stream URL
 2. Update in `index.html` and `schedule.html`
+
+## Chat & Firebase Notes
+
+- The shared live chat UI expects Firebase Authentication and Realtime Database access.
+- Protect production chat data with Firebase Security Rules so only allowed users can write and read the collections/paths you expose.
 
 ## License
 

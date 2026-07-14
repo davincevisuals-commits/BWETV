@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://davincevisuals-commits.github.io/bwetv/sitemap.xml

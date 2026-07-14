@@ -3,217 +3,209 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BWE TV Community</title>
+  <title>BWE TV Community | Chat, Discussions & Support</title>
+  <meta name="description" content="Join the BWE TV community to chat live, share discussion posts, and support the network.">
+  <meta property="og:title" content="BWE TV Community | Chat, Discussions & Support">
+  <meta property="og:description" content="Join the BWE TV community to chat live, share discussion posts, and support the network.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="BWE TV">
+  <meta property="og:url" content="https://davincevisuals-commits.github.io/bwetv/community.html">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="BWE TV Community | Chat, Discussions & Support">
+  <meta name="twitter:description" content="Join the BWE TV community to chat live, share discussion posts, and support the network.">
+  <link rel="canonical" href="https://davincevisuals-commits.github.io/bwetv/community.html">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link rel="preconnect" href="https://www.gstatic.com" crossorigin>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link href="site.css" rel="stylesheet">
+  <style>
+    :root {
+      --bwe-brand: #7c2d12;
+      --bwe-brand-strong: #78350f;
+      --bwe-primary: #dc2626;
+      --bwe-accent: #2563eb;
+      --bwe-surface: #f8fafc;
+    }
+
+    .brand-header { background: var(--bwe-brand); }
+    .brand-header-sub { background: var(--bwe-brand-strong); }
+  </style>
 </head>
 <body class="bg-white text-black">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
 
-  <!-- Header -->
-  <header class="bg-yellow-900 text-white sticky top-0 z-50 shadow-lg p-4 flex justify-between">
-    <div class="text-2xl font-bold">BWE <span class="bg-red-600 px-2">TV</span></div>
-    <nav class="hidden md:flex space-x-6">
-      <a href="index.html">Home</a>
-      <a href="schedule.html">Programs</a>
-      <a href="shows.html">Shows</a>
-      <a href="community.html">Community</a>
+  <header class="brand-header sticky top-0 z-50 text-white shadow-lg">
+    <div class="site-shell flex items-center justify-between p-4">
+      <a href="index.html" class="text-2xl font-bold">BWE <span class="bg-red-600 px-2">TV</span></a>
+      <nav class="hidden md:flex space-x-6" aria-label="Primary navigation">
+        <a href="index.html" data-nav-link class="hover:text-yellow-200 transition">Home</a>
+        <a href="schedule.html" data-nav-link class="hover:text-yellow-200 transition">Programs</a>
+        <a href="shows.html" data-nav-link class="hover:text-yellow-200 transition">Shows</a>
+        <a href="community.html" data-nav-link class="hover:text-yellow-200 transition">Community</a>
+        <a href="live-chat.html" data-nav-link class="hover:text-yellow-200 transition">Live Chat</a>
+      </nav>
+      <button id="mobileMenuBtn" class="md:hidden rounded p-2 text-2xl transition hover:bg-yellow-800" aria-expanded="false" aria-controls="mobileMenu" aria-label="Open navigation menu">☰</button>
+    </div>
+    <nav id="mobileMenu" class="mobile-menu hidden brand-header-sub md:hidden" aria-label="Mobile navigation">
+      <div class="site-shell flex flex-col space-y-3 p-4">
+        <a href="index.html" data-nav-link class="hover:text-yellow-200 transition">Home</a>
+        <a href="schedule.html" data-nav-link class="hover:text-yellow-200 transition">Programs</a>
+        <a href="shows.html" data-nav-link class="hover:text-yellow-200 transition">Shows</a>
+        <a href="community.html" data-nav-link class="hover:text-yellow-200 transition">Community</a>
+        <a href="live-chat.html" data-nav-link class="hover:text-yellow-200 transition">Live Chat</a>
+      </div>
     </nav>
-    <button id="mobileMenuBtn" class="md:hidden text-2xl">☰</button>
   </header>
 
-  <!-- Hero -->
-  <section class="p-6 text-center bg-gradient-to-r from-red-600 to-red-800 text-white">
-    <h1 class="text-4xl font-bold mb-2">Join the BWE TV Community</h1>
-    <p class="text-lg opacity-90">Connect with viewers, share your thoughts, and support our mission</p>
-  </section>
+  <main id="main-content">
+    <section class="bg-gradient-to-r from-red-600 to-red-800 px-6 py-10 text-center text-white">
+      <div class="site-shell">
+        <h1 class="mb-3 text-4xl font-bold">Join the BWE TV Community</h1>
+        <p class="mx-auto max-w-3xl text-lg opacity-90">Chat with viewers in real time, share your thoughts on the latest programmes, and support the mission behind BWE TV.</p>
+      </div>
+    </section>
 
-  <!-- Login Section -->
-  <section id="loginSection" class="p-6 bg-gray-100 text-center">
-    <h2 class="text-2xl font-bold mb-4">Login to Access Community</h2>
-    <input id="emailInput" type="email" placeholder="Email" class="border p-2 w-64 mb-2"><br>
-    <input id="passwordInput" type="password" placeholder="Password" class="border p-2 w-64 mb-2"><br>
-    <button id="loginBtn" class="bg-blue-600 text-white px-4 py-2 rounded">Login</button>
-    <button id="signupBtn" class="bg-green-600 text-white px-4 py-2 rounded ml-2">Sign Up</button>
-    <p class="mt-2 text-gray-600">Or <button id="anonBtn" class="underline text-blue-700">Continue as Guest</button></p>
-  </section>
+    <section id="loginSection" class="bg-gray-100 px-6 py-8">
+      <div class="site-shell max-w-3xl rounded-2xl bg-white p-6 shadow-sm">
+        <h2 class="text-2xl font-bold text-gray-900">Access the community</h2>
+        <p class="mt-2 text-gray-600">Sign in with email, create an account, or continue as a guest to join the live chat and discussions.</p>
 
-  <!-- Community Features (hidden until login) -->
-  <section id="communitySection" class="p-6 bg-gray-50 grid md:grid-cols-3 gap-6 hidden">
-
-    <!-- Live Chat -->
-    <div class="bg-white rounded-lg shadow-lg border-t-4 border-blue-600 p-6">
-      <h3 class="text-xl font-bold mb-2">💬 Live Chat</h3>
-      <div id="chatContainer" class="border p-4 h-40 overflow-y-auto bg-gray-50 mb-2"></div>
-      <input id="chatInput" type="text" placeholder="Type a message..." class="border p-2 w-full mb-2">
-      <button id="chatBtn" class="w-full bg-blue-600 text-white px-4 py-2 rounded">Send</button>
-    </div>
-
-    <!-- Forums -->
-    <div class="bg-white rounded-lg shadow-lg border-t-4 border-purple-600 p-6">
-      <h3 class="text-xl font-bold mb-2">📋 Forums & Discussions</h3>
-      <textarea id="postInput" placeholder="Share your thoughts..." class="border p-2 w-full mb-2"></textarea>
-      <button id="postBtn" class="w-full bg-purple-600 text-white px-4 py-2 rounded">Post</button>
-      <div id="postsContainer" class="mt-4 space-y-3"></div>
-    </div>
-
-    <!-- Support Us -->
-    <div class="bg-white rounded-lg shadow-lg border-t-4 border-green-600 p-6">
-      <h3 class="text-xl font-bold mb-2">❤️ Support BWE TV</h3>
-      <p class="text-gray-600 mb-4">Help sustain BWE TV through donations, sponsorships, or partnerships.</p>
-      <button id="donatePaypalBtn" class="w-full bg-green-600 text-white px-4 py-3 rounded mb-2">Pay via PayPal.Me</button>
-      <button id="donateMtnBtn" class="w-full bg-yellow-600 text-white px-4 py-3 rounded">Donate via MTN MoMo</button>
-    </div>
-
-  </section>
-
-  <!-- Firebase SDKs -->
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
-  <script src="shared-live-chat.js"></script>
-
-  <script>
-    // Firebase config
-    const firebaseConfig = {
-      apiKey: "AIzaSyCg9fxgrXlEuKW_m5MvDnG26Uf6lLdiYik",
-      authDomain: "bwetv-ug.firebaseapp.com",
-      projectId: "bwetv-ug",
-      storageBucket: "bwetv-ug.firebasestorage.app",
-      messagingSenderId: "481870926362",
-      appId: "1:481870926362:web:f406a0f135449ccfaa77a3",
-      measurementId: "G-SJ5YJH2G7C",
-      databaseURL: "https://bwetv-ug-default-rtdb.firebaseio.com/"
-    };
-    firebase.initializeApp(firebaseConfig);
-
-    const auth = firebase.auth();
-    const db = firebase.firestore();
-    const rtdb = firebase.database();
-
-    // Login / Signup / Guest
-    document.getElementById("loginBtn").addEventListener("click", () => {
-      const email = document.getElementById("emailInput").value;
-      const pass = document.getElementById("passwordInput").value;
-      auth.signInWithEmailAndPassword(email, pass).catch(err => alert(err.message));
-    });
-    document.getElementById("signupBtn").addEventListener("click", () => {
-      const email = document.getElementById("emailInput").value;
-      const pass = document.getElementById("passwordInput").value;
-      auth.createUserWithEmailAndPassword(email, pass).catch(err => alert(err.message));
-    });
-    document.getElementById("anonBtn").addEventListener("click", () => {
-      auth.signInAnonymously().catch(err => alert(err.message));
-    });
-
-    // Show community after login
-    auth.onAuthStateChanged(user => {
-      if (user) {
-        document.getElementById("loginSection").classList.add("hidden");
-        document.getElementById("communitySection").classList.remove("hidden");
-      }
-    });
-
-    // Live Chat (shared with Home page)
-    BWELiveChat.init({
-      rtdb,
-      auth,
-      chatContainerId: "chatContainer",
-      chatInputId: "chatInput",
-      chatBtnId: "chatBtn",
-      chatPath: "chat",
-      limit: 100
-    });
-
-    // Forums
-    document.getElementById("postBtn").addEventListener("click", () => {
-      const text = document.getElementById("postInput").value;
-      if (text.trim() !== "") {
-        db.collection("posts").add({
-          text,
-          user: auth.currentUser ? auth.currentUser.email || "guest" : "guest",
-          timestamp: firebase.firestore.FieldValue.serverTimestamp()
-        });
-        document.getElementById("postInput").value = "";
-      }
-    });
-    db.collection("posts").orderBy("timestamp", "desc").onSnapshot(snapshot => {
-      const container = document.getElementById("postsContainer");
-      container.innerHTML = "";
-      snapshot.forEach(doc => {
-        const post = doc.data();
-        const div = document.createElement("div");
-        div.className = "p-2 border rounded bg-white";
-        div.innerHTML = `<strong>${post.user}</strong><br>${post.text}`;
-        container.appendChild(div);
-      });
-    });
-
-    // Support Us
-    document.getElementById("donatePaypalBtn").addEventListener("click", () => {
-      // Use PayPal.Me link instead of donation button (works in Uganda)
-      window.location.href = "https://www.paypal.me/oyoovincentoyoo1725";
-    });
-
-    document.getElementById("donateMtnBtn").addEventListener("click", () => {
-      alert("📱 To donate via MTN Mobile Money, send funds to: +256774231123");
-    });
-
-    // Newsletter signup
-    function handleNewsletterSignup(event) {
-      event.preventDefault();
-      const email = event.target.querySelector('input[type="email"]').value;
-      alert(`✅ Welcome! We've sent a confirmation email to ${email}`);
-      event.target.reset();
-    }
-  </script>
-
-  <!-- Newsletter -->
-  <section class="p-6 bg-gradient-to-r from-yellow-900 to-red-600 text-white">
-    <div class="max-w-2xl mx-auto text-center">
-      <h2 class="text-2xl font-bold mb-4">Stay Updated</h2>
-      <p class="mb-6 opacity-90">Subscribe to our newsletter for program updates, special announcements, and exclusive content</p>
-      <form onsubmit="handleNewsletterSignup(event)" class="flex flex-col md:flex-row gap-3">
-        <input type="email" placeholder="Enter your email address" required class="flex-1 px-4 py-3 rounded text-black focus:outline-none focus:ring-2 focus:ring-yellow-300">
-        <button type="submit" class="bg-red-700 text-white px-8 py-3 rounded font-bold hover:bg-red-800 transition">Subscribe</button>
-      </form>
-    </div>
-  </section>
-
-  <!-- Community Stats -->
-  <section class="p-6 bg-gray-50">
-    <div class="max-w-6xl mx-auto">
-      <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">Our Community</h2>
-      <div class="grid md:grid-cols-4 gap-4">
-        <div class="bg-white rounded-lg shadow p-6 text-center">
-          <p class="text-3xl font-bold text-red-600 mb-2">45K+</p>
-          <p class="text-gray-600 font-semibold">Active Members</p>
+        <div class="mt-6 grid gap-4 md:grid-cols-2">
+          <div>
+            <label for="emailInput" class="mb-1 block text-sm font-semibold text-gray-700">Email address</label>
+            <input id="emailInput" type="email" placeholder="you@example.com" class="w-full rounded border p-3">
+          </div>
+          <div>
+            <label for="passwordInput" class="mb-1 block text-sm font-semibold text-gray-700">Password</label>
+            <input id="passwordInput" type="password" placeholder="Enter your password" class="w-full rounded border p-3">
+          </div>
         </div>
-        <div class="bg-white rounded-lg shadow p-6 text-center">
-          <p class="text-3xl font-bold text-blue-600 mb-2">2.4K</p>
-          <p class="text-gray-600 font-semibold">Monthly Discussions</p>
+
+        <div class="mt-5 flex flex-col gap-3 md:flex-row">
+          <button id="loginBtn" class="rounded bg-blue-600 px-4 py-3 font-semibold text-white">Login</button>
+          <button id="signupBtn" class="rounded bg-green-600 px-4 py-3 font-semibold text-white">Create account</button>
+          <button id="anonBtn" class="rounded border border-gray-300 px-4 py-3 font-semibold text-gray-700">Continue as Guest</button>
         </div>
-        <div class="bg-white rounded-lg shadow p-6 text-center">
-          <p class="text-3xl font-bold text-green-600 mb-2">98%</p>
-          <p class="text-gray-600 font-semibold">Satisfaction Rate</p>
+
+        <p id="communityStatus" class="mt-4 text-sm text-gray-600">Choose how you would like to participate.</p>
+      </div>
+    </section>
+
+    <section id="communitySection" class="hidden bg-gray-50 px-6 py-8">
+      <div class="site-shell space-y-8">
+        <div class="flex flex-col gap-3 rounded-2xl bg-white p-5 shadow-sm md:flex-row md:items-center md:justify-between">
+          <div>
+            <h2 class="text-2xl font-bold text-gray-900">Welcome to the community space</h2>
+            <p class="mt-1 text-sm text-gray-600">You are connected as <span id="currentViewer" class="font-semibold text-gray-900">Guest</span>.</p>
+          </div>
+          <div class="flex flex-wrap gap-3">
+            <a href="live-chat.html" class="rounded border border-gray-300 px-4 py-2 font-semibold text-gray-700">Open standalone chat</a>
+            <button id="signOutBtn" class="rounded bg-gray-900 px-4 py-2 font-semibold text-white" type="button">Sign out</button>
+          </div>
         </div>
-        <div class="bg-white rounded-lg shadow p-6 text-center">
-          <p class="text-3xl font-bold text-purple-600 mb-2">150+</p>
-          <p class="text-gray-600 font-semibold">Weekly Events</p>
+
+        <div class="grid gap-6 xl:grid-cols-3">
+          <section class="chat-shell flex flex-col rounded-2xl border-t-4 border-blue-600 bg-white p-6 shadow-lg" aria-labelledby="community-chat-heading">
+            <div class="mb-4 flex items-center justify-between gap-3">
+              <h3 id="community-chat-heading" class="text-xl font-bold">Live Chat</h3>
+              <span id="chatStatus" class="text-xs text-gray-500">Connecting...</span>
+            </div>
+            <div id="chatContainer" class="chat-scroll mb-2 flex-1 overflow-y-auto rounded border bg-gray-50 p-3" aria-live="polite"></div>
+            <p id="chatEmptyState" class="mb-3 text-sm text-gray-500">Messages from the home page and live chat room appear here too.</p>
+            <label for="chatInput" class="mb-1 text-sm font-semibold text-gray-700">Message</label>
+            <textarea id="chatInput" rows="3" maxlength="300" placeholder="Type a message..." class="mb-2 w-full rounded border p-3"></textarea>
+            <div class="mb-2 flex items-center justify-between text-xs text-gray-500">
+              <span>Press Enter to send. Shift + Enter adds a line break.</span>
+              <span id="charCount">0/300</span>
+            </div>
+            <button id="chatBtn" class="w-full rounded bg-blue-600 px-4 py-3 font-semibold text-white" type="button" disabled>Send</button>
+            <button id="newMsgBtn" class="mt-2 hidden rounded bg-blue-100 px-4 py-2 text-sm font-semibold text-blue-700" type="button">Show new messages</button>
+          </section>
+
+          <section class="rounded-2xl border-t-4 border-purple-600 bg-white p-6 shadow-lg" aria-labelledby="discussion-heading">
+            <h3 id="discussion-heading" class="mb-2 text-xl font-bold">Forums & Discussions</h3>
+            <p class="mb-3 text-sm text-gray-600">Share follow-up thoughts, feedback, and ideas with the wider audience.</p>
+            <label for="postInput" class="mb-1 block text-sm font-semibold text-gray-700">Start a discussion</label>
+            <textarea id="postInput" placeholder="Share your thoughts..." class="mb-2 w-full rounded border p-3"></textarea>
+            <button id="postBtn" class="w-full rounded bg-purple-600 px-4 py-3 font-semibold text-white" type="button">Post</button>
+            <p id="postStatus" class="mt-2 text-sm text-gray-500"></p>
+            <div id="postsContainer" class="mt-4 space-y-3"></div>
+          </section>
+
+          <section class="rounded-2xl border-t-4 border-green-600 bg-white p-6 shadow-lg" aria-labelledby="support-heading">
+            <h3 id="support-heading" class="mb-2 text-xl font-bold">Support BWE TV</h3>
+            <p class="mb-4 text-gray-600">Help sustain community broadcasting through donations, sponsorships, and partnerships.</p>
+            <button id="donatePaypalBtn" class="mb-2 w-full rounded bg-green-600 px-4 py-3 font-semibold text-white" type="button">Pay via PayPal.Me</button>
+            <button id="donateMtnBtn" class="w-full rounded bg-yellow-500 px-4 py-3 font-semibold text-white" type="button">Donate via MTN MoMo</button>
+
+            <div class="mt-6 rounded-xl bg-gray-50 p-4">
+              <h4 class="text-lg font-bold text-gray-900">Community notes</h4>
+              <ul class="mt-3 list-disc space-y-2 pl-5 text-sm text-gray-600">
+                <li>Be respectful and stay on topic.</li>
+                <li>Use the discussion board for longer posts and event ideas.</li>
+                <li>Live chat syncs with the home page and the dedicated live chat room.</li>
+              </ul>
+            </div>
+          </section>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Footer -->
-  <footer class="bg-yellow-900 text-white text-center p-4 mt-8">
-    <p>© 2026 BWE TV | <a href="#" class="hover:underline">About</a> | <a href="#" class="hover:underline">Privacy</a> | <a href="#" class="hover:underline">Contact</a></p>
-    <div class="flex justify-center space-x-4 mt-2">
-      <a href="#" class="hover:text-yellow-200">Facebook</a>
-      <a href="#" class="hover:text-yellow-200">YouTube</a>
-      <a href="#" class="hover:text-yellow-200">TikTok</a>
-      <a href="#" class="hover:text-yellow-200">LinkedIn</a>
+    <section class="bg-gradient-to-r from-yellow-900 to-red-600 px-6 py-8 text-white">
+      <div class="site-shell max-w-4xl text-center">
+        <h2 class="text-2xl font-bold">Stay Updated</h2>
+        <p class="mt-2 opacity-90">Subscribe for programme updates, special announcements, and exclusive community news.</p>
+        <form id="newsletterForm" class="mt-6 flex flex-col gap-3 md:flex-row">
+          <label class="sr-only" for="newsletterEmail">Email address</label>
+          <input id="newsletterEmail" type="email" placeholder="Enter your email address" required class="flex-1 rounded px-4 py-3 text-black focus:outline-none focus:ring-2 focus:ring-yellow-300">
+          <button type="submit" class="rounded bg-red-700 px-8 py-3 font-bold text-white transition hover:bg-red-800">Subscribe</button>
+        </form>
+        <p id="newsletterStatus" class="mt-3 text-sm"></p>
+      </div>
+    </section>
+
+    <section class="bg-gray-50 px-6 py-8">
+      <div class="site-shell">
+        <h2 class="mb-6 text-center text-2xl font-bold text-gray-800">Our Community</h2>
+        <div class="grid gap-4 md:grid-cols-4">
+          <article class="stat-card rounded-lg bg-white p-6 text-center shadow">
+            <p class="mb-2 text-3xl font-bold text-red-600">45K+</p>
+            <p class="font-semibold text-gray-600">Active Members</p>
+          </article>
+          <article class="stat-card rounded-lg bg-white p-6 text-center shadow">
+            <p class="mb-2 text-3xl font-bold text-blue-600">2.4K</p>
+            <p class="font-semibold text-gray-600">Monthly Discussions</p>
+          </article>
+          <article class="stat-card rounded-lg bg-white p-6 text-center shadow">
+            <p class="mb-2 text-3xl font-bold text-green-600">98%</p>
+            <p class="font-semibold text-gray-600">Satisfaction Rate</p>
+          </article>
+          <article class="stat-card rounded-lg bg-white p-6 text-center shadow">
+            <p class="mb-2 text-3xl font-bold text-purple-600">150+</p>
+            <p class="font-semibold text-gray-600">Weekly Events</p>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="brand-header mt-8 p-4 text-center text-white">
+    <div class="site-shell">
+      <p>© 2026 BWE TV</p>
+      <div class="footer-link-grid mt-3 text-sm font-semibold">
+        <a href="about.html" class="hover:text-yellow-200 transition">About</a>
+        <a href="privacy.html" class="hover:text-yellow-200 transition">Privacy</a>
+        <a href="contact.html" class="hover:text-yellow-200 transition">Contact</a>
+        <a href="schedule.html" class="hover:text-yellow-200 transition">Programs</a>
+        <a href="live-chat.html" class="hover:text-yellow-200 transition">Live Chat</a>
+      </div>
     </div>
   </footer>
+
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js" defer></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js" defer></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js" defer></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js" defer></script>
+  <script src="content.js" defer></script>
 </body>
 </html>
-                                                          

@@ -3,14 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BWE TV Shows</title>
+  <title>BWE TV Shows | Browse the Program Catalog</title>
+  <meta name="description" content="Explore the BWE TV show catalog, filter by category, and discover your next programme to watch.">
+  <meta property="og:title" content="BWE TV Shows | Browse the Program Catalog">
+  <meta property="og:description" content="Explore the BWE TV show catalog, filter by category, and discover your next programme to watch.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="BWE TV">
+  <meta property="og:url" content="https://davincevisuals-commits.github.io/bwetv/shows.html">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="BWE TV Shows | Browse the Program Catalog">
+  <meta name="twitter:description" content="Explore the BWE TV show catalog, filter by category, and discover your next programme to watch.">
+  <link rel="canonical" href="https://davincevisuals-commits.github.io/bwetv/shows.html">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link href="site.css" rel="stylesheet">
   <style>
     :root {
       --bwe-bg: #ffffff;
       --bwe-surface: #f8fafc;
       --bwe-text: #111827;
-      --bwe-text-muted: #6b7280;
       --bwe-brand: #7c2d12;
       --bwe-brand-strong: #78350f;
       --bwe-primary: #dc2626;
@@ -21,149 +32,111 @@
       --bwe-font-family: "Inter", "Segoe UI", Roboto, Arial, sans-serif;
     }
 
-    body {
-      font-family: var(--bwe-font-family);
-      color: var(--bwe-text);
-      line-height: 1.6;
-    }
-
-    h1, h2, h3, h4 {
-      letter-spacing: -0.01em;
-      line-height: 1.2;
-    }
-
-    .mobile-menu {
-      transition: all 0.3s ease;
-    }
-    .mobile-menu.hidden {
-      max-height: 0;
-      overflow: hidden;
-    }
-    .mobile-menu.visible {
-      max-height: 300px;
-    }
-
-    .show-card {
-      transition: all 0.3s ease;
-      cursor: pointer;
-    }
-    .show-card:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-    }
-    .show-card:hover .show-overlay {
-      opacity: 1;
-    }
-    .show-overlay {
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    }
-
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: var(--bwe-radius);
-      padding: 0.625rem 1rem;
-      font-weight: 700;
-      transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
-      border: 1px solid transparent;
-    }
+    body { font-family: var(--bwe-font-family); color: var(--bwe-text); line-height: 1.6; }
+    .mobile-menu { transition: all 0.3s ease; }
+    .show-card { transition: all 0.3s ease; }
+    .show-card:hover { transform: translateY(-8px); box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12); }
+    .btn { display: inline-flex; align-items: center; justify-content: center; border-radius: var(--bwe-radius); padding: 0.625rem 1rem; font-weight: 700; transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease; border: 1px solid transparent; }
     .btn:hover { transform: translateY(-1px); }
     .btn-primary { background: var(--bwe-primary); color: #fff; }
     .btn-primary:hover { background: var(--bwe-primary-hover); }
     .btn-secondary { background: #fff; color: var(--bwe-text); border-color: var(--bwe-border); }
     .btn-secondary:hover { background: #f9fafb; }
-
-    .category-filter.active {
-      background-color: var(--bwe-primary);
-      color: white;
-      border-color: var(--bwe-primary);
-    }
-
+    .category-filter.active { background-color: var(--bwe-primary); color: white; border-color: var(--bwe-primary); }
     .brand-header { background: var(--bwe-brand); }
     .brand-header-sub { background: var(--bwe-brand-strong); }
     .section-surface { background: var(--bwe-surface); }
   </style>
 </head>
 <body class="bg-white text-black">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
 
-  <header class="brand-header text-white sticky top-0 z-50 shadow-lg">
-    <div class="flex justify-between items-center p-4">
-      <div class="text-2xl font-bold">BWE <span class="bg-red-600 px-2">TV</span></div>
-      <nav class="hidden md:flex space-x-6">
-        <a href="index.html" class="hover:text-yellow-200 transition">Home</a>
-        <a href="schedule.html" class="hover:text-yellow-200 transition">Programs</a>
-        <a href="shows.html" class="hover:text-yellow-200 transition">Shows</a>
-        <a href="community.html" class="hover:text-yellow-200 transition">Community</a>
+  <header class="brand-header sticky top-0 z-50 text-white shadow-lg">
+    <div class="site-shell flex items-center justify-between p-4">
+      <a href="index.html" class="text-2xl font-bold">BWE <span class="bg-red-600 px-2">TV</span></a>
+      <nav class="hidden md:flex space-x-6" aria-label="Primary navigation">
+        <a href="index.html" data-nav-link class="hover:text-yellow-200 transition">Home</a>
+        <a href="schedule.html" data-nav-link class="hover:text-yellow-200 transition">Programs</a>
+        <a href="shows.html" data-nav-link class="hover:text-yellow-200 transition">Shows</a>
+        <a href="community.html" data-nav-link class="hover:text-yellow-200 transition">Community</a>
+        <a href="live-chat.html" data-nav-link class="hover:text-yellow-200 transition">Live Chat</a>
       </nav>
-      <button id="mobileMenuBtn" class="md:hidden text-2xl hover:bg-yellow-800 p-2 rounded transition">☰</button>
+      <button id="mobileMenuBtn" class="md:hidden rounded p-2 text-2xl transition hover:bg-yellow-800" aria-expanded="false" aria-controls="mobileMenu" aria-label="Open navigation menu">☰</button>
     </div>
 
-    <nav id="mobileMenu" class="mobile-menu hidden brand-header-sub md:hidden">
-      <div class="flex flex-col p-4 space-y-3">
-        <a href="index.html" class="hover:text-yellow-200 transition">Home</a>
-        <a href="schedule.html" class="hover:text-yellow-200 transition">Programs</a>
-        <a href="shows.html" class="hover:text-yellow-200 transition">Shows</a>
-        <a href="community.html" class="hover:text-yellow-200 transition">Community</a>
+    <nav id="mobileMenu" class="mobile-menu hidden brand-header-sub md:hidden" aria-label="Mobile navigation">
+      <div class="site-shell flex flex-col space-y-3 p-4">
+        <a href="index.html" data-nav-link class="hover:text-yellow-200 transition">Home</a>
+        <a href="schedule.html" data-nav-link class="hover:text-yellow-200 transition">Programs</a>
+        <a href="shows.html" data-nav-link class="hover:text-yellow-200 transition">Shows</a>
+        <a href="community.html" data-nav-link class="hover:text-yellow-200 transition">Community</a>
+        <a href="live-chat.html" data-nav-link class="hover:text-yellow-200 transition">Live Chat</a>
       </div>
     </nav>
   </header>
 
-  <section class="p-6 bg-gradient-to-r from-red-600 to-red-800 text-white text-center">
-    <h1 class="text-4xl font-bold mb-2">Our Shows</h1>
-    <p class="text-lg opacity-90">Browse our complete catalog of engaging programs</p>
-  </section>
-
-  <section class="p-6 section-surface border-b">
-    <div class="max-w-6xl mx-auto">
-      <div class="mb-6">
-        <input type="text" id="searchInput" placeholder="Search shows by title, host, or description..." class="w-full px-4 py-3 rounded border-2 border-gray-300 focus:border-red-600 focus:outline-none transition" oninput="filterShows()">
+  <main id="main-content">
+    <section class="bg-gradient-to-r from-red-600 to-red-800 p-6 text-center text-white">
+      <div class="site-shell">
+        <h1 class="mb-2 text-4xl font-bold">Our Shows</h1>
+        <p class="text-lg opacity-90">Browse our complete catalog of engaging programs and discover what to watch next.</p>
       </div>
-      <div class="mb-4">
-        <h3 class="text-sm font-bold text-gray-700 mb-3">Filter by Category</h3>
-        <div class="flex flex-wrap gap-2">
-          <button onclick="filterByCategory(event, 'All')" class="category-filter active btn btn-primary">All</button>
-          <button onclick="filterByCategory(event, 'News')" class="category-filter btn btn-secondary">📰 News</button>
-          <button onclick="filterByCategory(event, 'Culture')" class="category-filter btn btn-secondary">Culture</button>
-          <button onclick="filterByCategory(event, 'Health')" class="category-filter btn btn-secondary">Health</button>
-          <button onclick="filterByCategory(event, 'Education')" class="category-filter btn btn-secondary">Education</button>
-          <button onclick="filterByCategory(event, 'Entertainment')" class="category-filter btn btn-secondary">Entertainment</button>
-          <button onclick="filterByCategory(event, 'Business')" class="category-filter btn btn-secondary">Business</button>
+    </section>
+
+    <section class="section-surface border-b p-6">
+      <div class="site-shell">
+        <div class="mb-6">
+          <label for="searchInput" class="mb-2 block text-sm font-bold text-gray-700">Search the catalog</label>
+          <input type="text" id="searchInput" placeholder="Search shows by title, host, or description..." class="w-full rounded border-2 border-gray-300 px-4 py-3 transition focus:border-red-600 focus:outline-none" oninput="filterShows()">
+        </div>
+        <div class="mb-4">
+          <h2 class="mb-3 text-sm font-bold text-gray-700">Filter by Category</h2>
+          <div class="flex flex-wrap gap-2">
+            <button onclick="filterByCategory(event, 'All')" class="category-filter active btn btn-primary" type="button">All</button>
+            <button onclick="filterByCategory(event, 'News')" class="category-filter btn btn-secondary" type="button">News</button>
+            <button onclick="filterByCategory(event, 'Culture')" class="category-filter btn btn-secondary" type="button">Culture</button>
+            <button onclick="filterByCategory(event, 'Health')" class="category-filter btn btn-secondary" type="button">Health</button>
+            <button onclick="filterByCategory(event, 'Education')" class="category-filter btn btn-secondary" type="button">Education</button>
+            <button onclick="filterByCategory(event, 'Entertainment')" class="category-filter btn btn-secondary" type="button">Entertainment</button>
+            <button onclick="filterByCategory(event, 'Business')" class="category-filter btn btn-secondary" type="button">Business</button>
+          </div>
+        </div>
+        <div>
+          <label for="sortSelect" class="mb-3 block text-sm font-bold text-gray-700">Sort by</label>
+          <select id="sortSelect" onchange="sortShows()" class="rounded border-2 border-gray-300 px-4 py-2 transition focus:border-red-600 focus:outline-none">
+            <option value="rating">Rating (High to Low)</option>
+            <option value="episodes">Episodes (Most to Least)</option>
+            <option value="name">Name (A to Z)</option>
+          </select>
         </div>
       </div>
-      <div>
-        <h3 class="text-sm font-bold text-gray-700 mb-3">Sort by</h3>
-        <select id="sortSelect" onchange="sortShows()" class="px-4 py-2 rounded border-2 border-gray-300 focus:border-red-600 focus:outline-none transition">
-          <option value="rating">Rating (High to Low)</option>
-          <option value="episodes">Episodes (Most to Least)</option>
-          <option value="name">Name (A to Z)</option>
-        </select>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <section class="p-6 bg-white">
-    <div class="max-w-6xl mx-auto">
-      <div id="resultsInfo" class="mb-4 text-gray-600 font-semibold">Loading shows...</div>
-      <div id="showsContainer" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
-      <div id="noResults" class="text-center py-12 hidden">
-        <p class="text-2xl text-gray-500 mb-4">No shows found</p>
-        <button onclick="location.reload()" class="btn btn-primary">Reset Filters</button>
+    <section class="bg-white p-6">
+      <div class="site-shell">
+        <div id="resultsInfo" class="mb-4 font-semibold text-gray-600">Loading shows...</div>
+        <div id="showsContainer" class="grid gap-6 md:grid-cols-2 lg:grid-cols-3"></div>
+        <div id="noResults" class="hidden py-12 text-center">
+          <p class="mb-4 text-2xl text-gray-500">No shows found</p>
+          <button onclick="location.reload()" class="btn btn-primary" type="button">Reset Filters</button>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </main>
 
-  <footer class="brand-header text-white text-center p-4 mt-8">
-    <p>© 2026 BWE TV | <a href="#" class="hover:underline">About</a> | <a href="#" class="hover:underline">Privacy</a> | <a href="#" class="hover:underline">Contact</a></p>
-    <div class="flex justify-center space-x-4 mt-2">
-      <a href="#" class="hover:text-yellow-200 transition">Facebook</a>
-      <a href="#" class="hover:text-yellow-200 transition">Twitter</a>
-      <a href="#" class="hover:text-yellow-200 transition">YouTube</a>
-      <a href="#" class="hover:text-yellow-200 transition">Instagram</a>
+  <footer class="brand-header mt-8 p-4 text-center text-white">
+    <div class="site-shell">
+      <p>© 2026 BWE TV</p>
+      <div class="footer-link-grid mt-3 text-sm font-semibold">
+        <a href="about.html" class="hover:text-yellow-200 transition">About</a>
+        <a href="privacy.html" class="hover:text-yellow-200 transition">Privacy</a>
+        <a href="contact.html" class="hover:text-yellow-200 transition">Contact</a>
+        <a href="schedule.html" class="hover:text-yellow-200 transition">Programs</a>
+        <a href="community.html" class="hover:text-yellow-200 transition">Community</a>
+      </div>
     </div>
   </footer>
 
-  <script src="content.js"></script>
+  <script src="content.js" defer></script>
 </body>
 </html>

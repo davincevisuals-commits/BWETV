@@ -595,6 +595,7 @@ function setupSharedChat(services, options = {}) {
   if (chatContainer.dataset.chatInitialized === "true") {
     return;
   }
+  chatContainer.dataset.chatInitialized = "true";
 
   if (!auth || !rtdb) {
     setDisabled(chatInput, true);
@@ -722,7 +723,6 @@ function setupSharedChat(services, options = {}) {
       }
     });
 
-    chatContainer.dataset.chatInitialized = "true";
     state.initialized = true;
   }
 

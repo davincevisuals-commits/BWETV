@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080" fill="none">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0b1020"/>
+      <stop offset="65%" stop-color="#1f3a5a"/>
+      <stop offset="100%" stop-color="#334155"/>
+    </linearGradient>
+    <radialGradient id="sun" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(1480 240) rotate(90) scale(180 180)">
+      <stop stop-color="#fbbf24" stop-opacity="0.9"/>
+      <stop offset="1" stop-color="#fbbf24" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1920" height="1080" fill="url(#sky)"/>
+  <rect y="650" width="1920" height="430" fill="#0f172a"/>
+  <path d="M0 760 C220 700, 420 700, 620 760 C820 820, 1020 820, 1220 760 C1420 700, 1620 700, 1920 790 L1920 1080 L0 1080 Z" fill="#1e293b"/>
+  <path d="M0 820 C260 760, 520 760, 780 820 C1040 880, 1300 880, 1560 820 C1720 780, 1840 770, 1920 790 L1920 1080 L0 1080 Z" fill="#334155" opacity="0.85"/>
+  <circle cx="1480" cy="240" r="180" fill="url(#sun)"/>
+  <rect x="250" y="620" width="220" height="220" rx="10" fill="#111827"/>
+  <rect x="500" y="560" width="260" height="280" rx="10" fill="#0b1224"/>
+  <rect x="790" y="600" width="180" height="240" rx="10" fill="#111827"/>
+  <rect x="1010" y="540" width="320" height="300" rx="12" fill="#0b1224"/>
+  <rect x="1360" y="590" width="250" height="250" rx="10" fill="#111827"/>
+  <rect x="1650" y="640" width="140" height="200" rx="8" fill="#0b1224"/>
+  <g opacity="0.35" fill="#f8fafc">
+    <rect x="285" y="660" width="24" height="24"/>
+    <rect x="322" y="660" width="24" height="24"/>
+    <rect x="359" y="660" width="24" height="24"/>
+    <rect x="536" y="610" width="24" height="24"/>
+    <rect x="573" y="610" width="24" height="24"/>
+    <rect x="610" y="610" width="24" height="24"/>
+    <rect x="1048" y="590" width="24" height="24"/>
+    <rect x="1085" y="590" width="24" height="24"/>
+    <rect x="1122" y="590" width="24" height="24"/>
+    <rect x="1398" y="640" width="24" height="24"/>
+    <rect x="1435" y="640" width="24" height="24"/>
+    <rect x="1472" y="640" width="24" height="24"/>
+  </g>
+  <text x="130" y="180" fill="#f8fafc" font-family="Arial, Helvetica, sans-serif" font-size="56" font-weight="700" opacity="0.9">BWE TV · BWAYALE</text>
+  <text x="130" y="245" fill="#e2e8f0" font-family="Arial, Helvetica, sans-serif" font-size="32" opacity="0.9">Uganda Community Broadcast</text>
+</svg>
